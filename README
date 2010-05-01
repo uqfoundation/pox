@@ -1,0 +1,14 @@
+pox: <short description goes here>
+
+Current release:
+    None
+
+Installation:
+    $ mm
+
+License:
+    >>> print pox.__license__
+
+More information:
+    http://www.cacr.caltech.edu/~mmckerns/
+
