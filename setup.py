@@ -16,7 +16,7 @@ except ImportError:
 setup_code = """
 setup(name='pox',
       version='0.1a1',
-      description='a framework for filesystem exploration and automated builds',
+      description='utilities for filesystem exploration and automated builds',
       author = 'Mike McKerns',
       maintainer = 'Mike McKerns',
       maintainer_email = 'mmckerns@caltech.edu',

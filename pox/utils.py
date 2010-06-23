@@ -5,7 +5,7 @@
 # by mmckerns@caltech.edu
 
 """
-<summary doc goes here>
+higher-level shell utilities for user environment and filesystem exploration
 """
 
 import os

@@ -1,10 +1,11 @@
 pox: utilities for filesystem exploration and automated builds
 
 Current release:
-    None
+    pox-0.1a1
 
 Installation:
-    $ mm
+    $ python setup.py build
+    $ python setup.py install
 
 License:
     >>> print pox.__license__

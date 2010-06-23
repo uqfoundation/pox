@@ -1,0 +1,54 @@
+# scripts to augment the user's environment for distrubted computing
+
+== bash_profile ============
+FEATURES:
+ - default entry point for pathos distributed communications
+ - activates enviroment aliases and functions provided by other files
+
+INSTALLATION:
+ - copy or append bash_profile to $HOME/.bash_profile
+
+
+
+== pathosrc ============
+FEATURES:
+ - provide user-owned 'bin' and 'lib' depositories
+ - activate enhancents provided by .python
+ - extend pythonpath to user's enviroment
+
+INSTALLATION:
+ - copy pathosrc to $HOME/.pathosrc
+
+
+
+== pythonstartup ============
+FEATURES:
+ - provides python interpreter with 'tab' completion
+ - provides python interpreter with 'scroll" access to history across sessions
+
+INSTALLATION:
+ - copy pythonstartup to $HOME/.python
+
+
+
+== ssh_agent ============
+FEATURES:
+ - provides ssh-keypair authentication
+ - facilitates automated authentication to 'known_hosts'
+
+INSTALLATION:
+ - copy ssh_agent to $HOME/.ssh_agent
+
+
+
+== ssh_config ============
+FEATURES:
+ - provides ssh-agent forwarding
+ - extends automated authentication to single-point authentication
+
+INSTALLATION:
+ - copy ssh_config to $HOME/.ssh/config
+
+
+
+# EOF

@@ -5,7 +5,7 @@
 # by mmckerns@caltech.edu
 
 """
-<summary doc goes here>
+shell utilities for user environment and filesystem exploration
 """
 
 import os
@@ -252,6 +252,11 @@ def test():
     print 'testing getROOT...'
     print getROOT()
 
+    print 'testing getSEP...'
+    print getSEP()
+    print getSEP('ext')
+#   print getSEP('foo')
+
     print 'testing mkdir...'
     newdir = 'xxxtest/testxxx'
     print mkdir(newdir)
@@ -260,7 +265,7 @@ def test():
 
     print 'testing walk...'
     print walk('/usr/local','*',recurse=0,folders=1,files=0)
-    homedir = walk('/home',getUSER(),0,1)[0]
+    homedir = walk(getHOME()+getSEP()+"..", getUSER(), 0, 1)[0]
     print homedir
     print walk(homedir,'.bashrc',recurse=0)
 
@@ -288,11 +293,6 @@ def test():
     print 'testing find...'
     print find('python','/usr/local',type='l')
     print find('*py;*txt')
-
-    print 'testing getSEP...'
-    print getSEP()
-    print getSEP('ext')
-#   print getSEP('foo')
 
     print 'testing shellsub...'
     command = '${HOME}/bin/which foo("bar")'
