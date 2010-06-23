@@ -1,0 +1,17 @@
+# .bash_profile (additions)
+
+# Get standard aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# Activate the ssh-agent
+if [ -f ~/.ssh_agent ]; then
+	. ~/.ssh_agent
+fi
+
+# Get additional aliases and functions 
+if [ -f ~/.pathosrc ]; then
+	. ~/.pathosrc
+fi
+

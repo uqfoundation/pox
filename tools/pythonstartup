@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+#
+# Provides readline tools, including:
+#  - 'tab' completion
+#  - 'scroll' access to history across python sessions
+#
+# to activate, run the following in your command shell:
+#   export PYTHONSTARTUP=$HOME/.python
+#   export PYTHONHISTORY=$HOME/.pyhistory
+#   cp ./pythonstartup $PYTHONSTARTUP
+#
+
+try:
+  import readline
+except ImportError:
+  print "Module readline not available."
+else:
+  import rlcompleter
+  import os
+  import atexit
+
+  try:
+    historyPath = os.environ["PYTHONHISTORY"]
+  except KeyError:
+    historyPath = os.path.expanduser("~/.pyhistory")
+    print "Imported history from: '%s'" % historyPath
+    print "Set history file with PYTHONHISTORY."
+  else:
+    pass
+
+  def save_history(historyPath=historyPath):
+    import readline
+    readline.write_history_file(historyPath)
+
+  if os.path.exists(historyPath):
+    readline.read_history_file(historyPath)
+
+  atexit.register(save_history)
+
+  readline.parse_and_bind("tab: complete")
+
+  del os, atexit, readline, rlcompleter, save_history, historyPath

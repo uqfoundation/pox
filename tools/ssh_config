@@ -1,0 +1,4 @@
+Host *
+     ForwardAgent yes
+#    ForwardX11 no
+#    ForwardX11Trusted no

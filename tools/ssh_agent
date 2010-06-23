@@ -1,0 +1,18 @@
+# .ssh_agent
+
+# --- ssh-agent ---
+# If this shell is interactive, restart it within an ssh-agent.  This
+# depends on ssh-agent and ssh-add being on the user's default PATH, which
+# should be the case if they're in /usr/bin where they should be.
+
+case $- in *i*)
+  if [ "$SSH_AUTH_SOCK" == "" ] ; then
+    exec ssh-agent $SHELL -l$- $*
+  fi
+  case "`ssh-add -l`" in "The agent has no identities."*)
+    for i in identity id_rsa ; do if [ -r .ssh/$i ] ; then
+      ssh-add .ssh/$i
+    fi ; done
+  esac
+esac
+# --- end ssh-agent ---
