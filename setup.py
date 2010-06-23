@@ -43,7 +43,7 @@ if has_setuptools:
 # close 'setup' call
 setup_code += """    
       zip_safe=True,
-      scripts=[])
+      scripts=['scripts/pox_launcher.py'])
 """
 
 # exec the 'setup' code

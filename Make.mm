@@ -4,6 +4,7 @@ PROJECT = pox
 
 BUILD_DIRS = \
     pox \
+    scripts \
 
 OTHER_DIRS = \
     examples \
