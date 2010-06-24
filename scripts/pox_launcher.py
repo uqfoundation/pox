@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
 """
-pox command launcher
+the pox command launcher::
+    - run any of the pox commands at the command shell prompt
+
+For example::
+    $ pox_launcher.py "which('python')"
 """
 from pox import *
 

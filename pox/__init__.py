@@ -103,6 +103,12 @@ Usage Notes
 Probably the best way to get started is to look at the tests
 that are provided within pox. See `pox.tests` for a set of scripts
 that demonstrate pox's ability to interact with the operating system.
+Pox utilities can also be run directly from an operating system terminal,
+using the `pox_launcher.py` script.
+
+Important utilities and functions are found here::
+    - pox.pox.shutils             [low-level shell utilities]
+    - pox.pox.utils               [high-level shell utilities]
 
 
 More Information
