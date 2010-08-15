@@ -96,8 +96,9 @@ def whereis(prog,listall=0): #Unix specific
     
 def which(prog,allowlink=1,allowerr=0,listall=0): #Unix specific
     '''which(prog[,allowlink,allowerr,listall]) --> path to executable'''
-    import os
-    if os.name == "nt": raise NotImplementedError , "method 'which' is not yet implemented in Windows platform"
+    from sys import platform
+    if platform[:3] == 'win': raise NotImplementedError
+    #if os.name == "nt": raise NotImplementedError , "method 'which' is not yet implemented in Windows platform"
     whcom = 'which '
     if listall: whcom += '-a '
     stin,stout = os.popen4(whcom+prog)
