@@ -15,7 +15,7 @@ except ImportError:
 # build the 'setup' call
 setup_code = """
 setup(name='pox',
-      version='0.1a1',
+      version='0.1a2.dev',
       description='utilities for filesystem exploration and automated builds',
       author = 'Mike McKerns',
       maintainer = 'Mike McKerns',
