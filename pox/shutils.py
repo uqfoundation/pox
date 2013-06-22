@@ -9,6 +9,9 @@ shell utilities for user environment and filesystem exploration
 """
 
 import os
+from subprocess import Popen, PIPE, STDOUT
+popen4 = {'shell':True, 'stdin':PIPE, 'stdout':PIPE, 'stderr':STDOUT, \
+          'close_fds':True}
 
 def getSHELL():
     '''getSHELL(); Return the name of the current shell'''
@@ -82,11 +85,11 @@ def env(var,firstval=0,pathDups=1):
 def whereis(prog,listall=0): #Unix specific
     '''whereis(prog[,listall]) --> path to file'''
     whcom = 'whereis '
-    stin,stout = os.popen4(whcom+prog)
-    stin.close()
-    pathstr = stout.read()
-    stout.close()
-    paths = pathstr.strip().split(":")[1]
+    p = Popen(whcom+prog, **popen4)
+    p.stdin.close()
+    pathstr = p.stdout.read()
+    p.stdout.close()
+    paths = pathstr.strip().split(":")[-1] #XXX: ':' ???  -1 ???
     pathlist = paths.strip().split()
     if not pathlist:
         if not listall: pathlist = ''
@@ -101,10 +104,10 @@ def which(prog,allowlink=1,allowerr=0,listall=0): #Unix specific
     #if os.name == "nt": raise NotImplementedError , "method 'which' is not yet implemented in Windows platform"
     whcom = 'which '
     if listall: whcom += '-a '
-    stin,stout = os.popen4(whcom+prog)
-    stin.close()
-    pathstr = stout.read()
-    stout.close()
+    p = Popen(whcom+prog, **popen4)
+    p.stdin.close()
+    pathstr = p.stdout.read()
+    p.stdout.close()
     errind = 'no '+prog+' in'
     if (errind in pathstr) and (not allowerr):
         return None
@@ -132,10 +135,10 @@ def find(items,root=None,recurse=1,type=None):
             if not recurse:
                 command += ' -maxdepth 1'
             print command
-            stin,stout = os.popen4(command)
-            stin.close()
-            pathstr = stout.readlines()
-            stout.close()
+            p = Popen(command, **popen4)
+            p.stdin.close()
+            pathstr = p.stdout.readlines()
+            p.stdout.close()
             errind = ['find:','Usage:']
             if errind[1] in pathstr:
                 print "Error: incorrect usage '%s'" % command
