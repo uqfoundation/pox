@@ -40,15 +40,17 @@ issues is maintained at http://trac.mystic.cacr.caltech.edu/project/pathos/query
 Major Features
 --------------
 Pox provides utilities for discovering the user's environment::
-    * return the user's name, current shell, and path to user's home directory
-    * strip duplicate entries from the user's $PATH
-    * lookup and expand environment variables from ${VAR} to 'value'
+
+* return the user's name, current shell, and path to user's home directory
+* strip duplicate entries from the user's $PATH
+* lookup and expand environment variables from ${VAR} to 'value'
 
 Pox also provides utilities for filesystem exploration and manipulation::
-    * discover the path to a file, exectuable, directory, or symbolic link 
-    * discover the path to an installed package
-    * parse operating system commands for remote shell invocation
-    * convert text files to platform-specific formatting
+
+* discover the path to a file, exectuable, directory, or symbolic link 
+* discover the path to an installed package
+* parse operating system commands for remote shell invocation
+* convert text files to platform-specific formatting
 
 
 Current Release
