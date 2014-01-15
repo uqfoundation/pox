@@ -4,6 +4,7 @@
 test pox's higher-level shell utilities
 """
 from pox import *
+import os
 
 def test():
     '''test(); script to test all functions'''
@@ -15,11 +16,12 @@ def test():
     bogusdict = {'PYTHIA_STUFF':'${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',
                  'MIKE_VERSION':'1.0','MIKE_DIR':'${HOME}/junk',
                  'DUMMY_VERSION':'6.9','DUMMY_STUFF':'/a/b',
-                 'PYTHIA_VERSION':'0.0.1'}
+                 'DV_DIR':'${HOME}/dev', 'PYTHIA_VERSION':'0.0.1'}
     homedir = shutils.getHOME()
     print getVars(homedir)
-    print getVars('${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff')
+    print getVars('${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',bogusdict)
     print getVars('${MIKE_DIR}/stuff',bogusdict)
+    print getVars('${HOME}/stuff')
 
     print 'testing expandvars...'
     print expandvars(homedir)

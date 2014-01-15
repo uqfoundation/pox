@@ -4,6 +4,7 @@
 test pox's shell utilities
 """
 from pox import *
+import os
 
 def test():
     '''test(); script to test all functions'''

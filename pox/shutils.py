@@ -8,10 +8,12 @@
 shell utilities for user environment and filesystem exploration
 """
 
+from __future__ import absolute_import
 import os
 from subprocess import Popen, PIPE, STDOUT
 popen4 = {'shell':True, 'stdin':PIPE, 'stdout':PIPE, 'stderr':STDOUT, \
           'close_fds':True}
+from ._disk import rmtree
 
 def getSHELL():
     '''getSHELL(); Return the name of the current shell'''

@@ -8,8 +8,10 @@
 higher-level shell utilities for user environment and filesystem exploration
 """
 
+from __future__ import absolute_import
 import os
-import shutils
+from . import shutils
+from ._disk import memstr_to_kbytes, disk_used
 
 def makefilter(list=[],seperator=';'):
     '''makefilter([list,seperator]) --> filter pattern generated from a list
