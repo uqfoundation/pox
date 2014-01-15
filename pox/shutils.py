@@ -10,10 +10,16 @@ shell utilities for user environment and filesystem exploration
 
 from __future__ import absolute_import
 import os
+import sys
 from subprocess import Popen, PIPE, STDOUT
 popen4 = {'shell':True, 'stdin':PIPE, 'stdout':PIPE, 'stderr':STDOUT, \
           'close_fds':True}
 from ._disk import rmtree
+
+if sys.version_info[0] < 3:
+    MODE = eval('0775')
+else:
+    MODE = eval('0o775')
 
 def getSHELL():
     '''getSHELL(); Return the name of the current shell'''
@@ -101,8 +107,7 @@ def whereis(prog,listall=0): #Unix specific
     
 def which(prog,allowlink=1,allowerr=0,listall=0): #Unix specific
     '''which(prog[,allowlink,allowerr,listall]) --> path to executable'''
-    from sys import platform
-    if platform[:3] == 'win': raise NotImplementedError
+    if sys.platform[:3] == 'win': raise NotImplementedError
     #if os.name == "nt": raise NotImplementedError , "method 'which' is not yet implemented in Windows platform"
     whcom = 'which '
     if listall: whcom += '-a '
@@ -126,8 +131,7 @@ def find(items,root=None,recurse=1,type=None):
     if not root: root = os.curdir
     #create a list by splitting patterns at ';'
     try:
-        from sys import platform
-        if platform[:3] == 'win': raise NotImplementedError
+        if sys.platform[:3] == 'win': raise NotImplementedError
         pathlist = []
         search_list = items.split(';')
         for item in search_list:
@@ -202,9 +206,12 @@ def where(filename,search_path,pathsep=None):
             return os.path.abspath(candidate)
     return None
 
-def mkdir(dirpath,root=None,mode=0775):
+def mkdir(dirpath,root=None,mode=MODE):
     '''mkdir(dirpath[,root,mode]) --> absolute path of new dir
-    Make a new directory (and necessary parents) in root dir'''
+    Make a new directory (and necessary parents) in root dir
+    Mode is an octal representing read/write permissions [default is 0o775]
+    (i.e. read/write/execute for 'user' and 'group', read/execute for 'others') 
+    '''
     if not root: root = os.curdir
     newdir = os.path.join(root,dirpath)
     absdir = os.path.abspath(newdir)
@@ -212,7 +219,8 @@ def mkdir(dirpath,root=None,mode=0775):
     try:
         os.makedirs(absdir,mode)
         return absdir
-    except OSError, err:
+    except OSError:
+        err = sys.exc_info()[0]
         if (err.errno != errno.EEXIST) or (not os.path.isdir(absdir)):
             raise
 

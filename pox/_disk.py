@@ -72,7 +72,7 @@ def rmtree(path, self=True, onerror=None):
         names = []
         try:
             names = os.listdir(path)
-        except os.error as err:
+        except os.error:
             if onerror is not None:
                 onerror(os.listdir, path, sys.exc_info())
             else:
