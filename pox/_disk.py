@@ -50,16 +50,17 @@ def memstr_to_kbytes(text):
 # then retry once. if it still fails, raise the exception
 RM_SUBDIRS_RETRY_TIME = 0.1
 
-def rmtree(path, self=True, onerror=None):
+def rmtree(path, self=True, ignore_errors=False, onerror=None):
     """Remove all subdirectories in this path.
 
     If self=False, the directory indicated by `path` is left in place,
     and its subdirectories are erased. If self=True, 'path' is also removed.
 
-    If onerror is set, it is called to handle the error with arguments (func,
-    path, exc_info) where func is os.listdir, os.remove, or os.rmdir;
-    path is the argument to that function that caused it to fail; and
-    exc_info is a tuple returned by sys.exc_info().  If onerror is None,
+    If ignore_erros is set, errors are ignored; otherwise, if onerror is set,
+    it is called to handle the error with arguments (func, path, exc_info)
+    where func is os.listdir, os.remove, or os.rmdir; path is the argument
+    to that function that caused it to fail; and exc_info is a tuple returned
+    by sys.exc_info().  If ignore_erros is False and onerror is None,
     an exception is raised.
     """
 
@@ -82,14 +83,14 @@ def rmtree(path, self=True, onerror=None):
         fullname = os.path.join(path, name)
         if os.path.isdir(fullname):
             if onerror is not None:
-                shutil.rmtree(fullname, False, onerror)
+                shutil.rmtree(fullname, ignore_errors, onerror)
             else:
                 # allow the rmtree to fail once, wait and re-try.
                 # if the error is raised again, fail
                 err_count = 0
                 while True:
                     try:
-                        shutil.rmtree(fullname, False, None)
+                        shutil.rmtree(fullname, ignore_errors, None)
                         break
                     except os.error:
                         if err_count > 0:

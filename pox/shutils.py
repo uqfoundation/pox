@@ -206,12 +206,13 @@ def where(filename,search_path,pathsep=None):
             return os.path.abspath(candidate)
     return None
 
-def mkdir(dirpath,root=None,mode=MODE):
+def mkdir(dirpath,root=None,mode=None):
     '''mkdir(dirpath[,root,mode]) --> absolute path of new dir
     Make a new directory (and necessary parents) in root dir
     Mode is an octal representing read/write permissions [default is 0o775]
     (i.e. read/write/execute for 'user' and 'group', read/execute for 'others') 
     '''
+    if mode is None: mode = MODE
     if not root: root = os.curdir
     newdir = os.path.join(root,dirpath)
     absdir = os.path.abspath(newdir)
