@@ -11,7 +11,7 @@ higher-level shell utilities for user environment and filesystem exploration
 from __future__ import absolute_import
 import os
 from . import shutils
-from ._disk import memstr_to_kbytes, disk_used
+from ._disk import kbytes, disk_used
 
 def makefilter(list=[],seperator=';'):
     '''makefilter([list,seperator]) --> filter pattern generated from a list
@@ -151,8 +151,8 @@ def findpackage(package,root=None,firstval=0):
     targetdir = shutils.find(basedir,root,recurse=1,type='d')
     #print "targetdir" ,targetdir
     #remove invalid candidate directories (and 'BLD_ROOT' & 'EXPORT_ROOT')
-    bldroot = shutils.env('BLD_ROOT',firstval=1)
-    exproot = shutils.env('EXPORT_ROOT',firstval=1)
+    bldroot = shutils.env('BLD_ROOT',all=False)
+    exproot = shutils.env('EXPORT_ROOT',all=False)
     remlist = []
     import fnmatch
     for dir in targetdir:

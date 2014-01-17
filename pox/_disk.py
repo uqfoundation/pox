@@ -16,7 +16,7 @@ import time
 
 
 def disk_used(path):
-    """ Return the disk usage in a directory."""
+    """disk_used(path); Return the disk usage in a directory"""
     size = 0
     for file in os.listdir(path) + ['.']:
         stat = os.stat(os.path.join(path, file))
@@ -31,8 +31,14 @@ def disk_used(path):
     return int(size / 1024.)
 
 
-def memstr_to_kbytes(text):
-    """ Convert a memory text to it's value in kilobytes.
+def kbytes(text):
+    """kbytes(text); Convert memory text to the corresponding value in kilobytes
+
+    For example:
+        >>> kbytes(\'10K\')
+        10
+        >>> kbytes(\'10G\')
+        10485760
     """
     kilo = 1024
     units = dict(K=1, M=kilo, G=kilo ** 2)
@@ -40,8 +46,8 @@ def memstr_to_kbytes(text):
         size = int(units[text[-1]] * float(text[:-1]))
     except (KeyError, ValueError):
         raise ValueError(
-                "Invalid literal for size give: %s (type %s) should be "
-                "alike '10G', '500M', '50K'." % (text, type(text))
+                "Invalid literal for size: '%s' should be "
+                "a string like '10G', '500M', '50K'" % text
                 )
     return size
 
@@ -51,10 +57,10 @@ def memstr_to_kbytes(text):
 RM_SUBDIRS_RETRY_TIME = 0.1
 
 def rmtree(path, self=True, ignore_errors=False, onerror=None):
-    """Remove all subdirectories in this path.
+    """rmtree(path,[,self,ignore_errors,onerror]); Remove directories in path
 
-    If self=False, the directory indicated by `path` is left in place,
-    and its subdirectories are erased. If self=True, 'path' is also removed.
+    If self=False, the directory indicated by path is left in place,
+    and its subdirectories are erased. If self=True, path is also removed.
 
     If ignore_erros is set, errors are ignored; otherwise, if onerror is set,
     it is called to handle the error with arguments (func, path, exc_info)
@@ -63,21 +69,16 @@ def rmtree(path, self=True, ignore_errors=False, onerror=None):
     by sys.exc_info().  If ignore_erros is False and onerror is None,
     an exception is raised.
     """
-
-    # NOTE this code is adapted from the one in shutil.rmtree, and is
-    # just as fast
-
+    names = []
+    try:
+        names = os.listdir(path)
+    except os.error:
+        if onerror is not None:
+            onerror(os.listdir, path, sys.exc_info())
+        else:
+            raise
     if self:
         names = ['']
-    else:
-        names = []
-        try:
-            names = os.listdir(path)
-        except os.error:
-            if onerror is not None:
-                onerror(os.listdir, path, sys.exc_info())
-            else:
-                raise
 
     for name in names:
         fullname = os.path.join(path, name)
@@ -97,3 +98,6 @@ def rmtree(path, self=True, ignore_errors=False, onerror=None):
                             raise
                         err_count += 1
                         time.sleep(RM_SUBDIRS_RETRY_TIME)
+
+
+# EOF

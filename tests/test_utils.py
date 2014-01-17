@@ -3,11 +3,11 @@
 """
 test pox's higher-level shell utilities
 """
-from pox import *
 import os
 
 def test():
     '''test(); script to test all functions'''
+    from pox import *
     print 'testing makefilter...'
     print makefilter(['PYTHON*','DEVELOPER'])
     print makefilter([])
@@ -17,14 +17,14 @@ def test():
                  'MIKE_VERSION':'1.0','MIKE_DIR':'${HOME}/junk',
                  'DUMMY_VERSION':'6.9','DUMMY_STUFF':'/a/b',
                  'DV_DIR':'${HOME}/dev', 'PYTHIA_VERSION':'0.0.1'}
-    homedir = shutils.getHOME()
-    print getVars(homedir)
+    home = homedir()
+    print getVars(home)
     print getVars('${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',bogusdict)
     print getVars('${MIKE_DIR}/stuff',bogusdict)
     print getVars('${HOME}/stuff')
 
     print 'testing expandvars...'
-    print expandvars(homedir)
+    print expandvars(home)
     print expandvars('${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff')
     print expandvars('${MIKE_DIR}/${DV_DIR}/stuff',bogusdict)
     print expandvars('${DV_DIR}/${PYTHIA_VERSION}',secondref=bogusdict)
@@ -51,15 +51,15 @@ def test():
     print getLines(fl,'hello\n','world\n')
 
     print 'testing findpackage...'
-   #print findpackage('pathos/pox',shutils.env('DV_DIR',1),1)
-   #print findpackage('dev/pythia*',shutils.env('DV_DIR',1))
+   #print findpackage('pathos/pox',env('DV_DIR',all=False),1)
+   #print findpackage('dev/pythia*',env('DV_DIR',all=False))
     print findpackage('python*','/usr/lib')
 
     print 'testing makeTarget...'
     myhost = 'login.cacr.caltech.edu'
     print makeTarget('~/dev')
     print makeTarget('~/dev',forceSSH=True)
-    print makeTarget('~/dev',host=myhost,user=shutils.getUSER())
+    print makeTarget('~/dev',host=myhost,user=username())
 
     print 'testing parseTarget...'
     destination = 'danse@%s:~/dev' % myhost

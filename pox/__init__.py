@@ -26,12 +26,13 @@ __doc__ = """
 __license__ = """
 """ + __license__
 
-from .shutils import getSHELL, getHOME, getROOT, getUSER, getSEP, \
-                     stripDups, env, whereis, which, find, walk, where, \
+from .shutils import shelltype, homedir, rootdir, username, sep, \
+                     minpath, env, whereis, which, find, walk, where, \
                      mkdir, rmtree, shellsub
 from .utils import makefilter, expandvars, getVars, convert, replaceText, \
                    getLines, findpackage, prunelist, prunedict, makeTarget, \
-                   parseTarget, memstr_to_kbytes, disk_used
+                   parseTarget, kbytes, disk_used
+
 
 def license():
     """print license"""
