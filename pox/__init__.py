@@ -30,8 +30,8 @@ from .shutils import shelltype, homedir, rootdir, username, sep, \
                      minpath, env, whereis, which, find, walk, where, \
                      mkdir, rmtree, shellsub
 from .utils import pattern, expandvars, getvars, convert, replace, \
-                   findpackage, prunelist, prunedict, makeTarget, \
-                   parseTarget, kbytes, disk_used, index_slice, index_join
+                   findpackage, select, selectdict, remote, \
+                   parse_remote, kbytes, disk_used, index_slice, index_join
 
 
 def license():

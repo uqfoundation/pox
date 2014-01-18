@@ -199,8 +199,7 @@ def findpackage(package,root=None,all=False):
     all: if True, return list of paths where package is found
 
     findpackage will do standard pattern matching for names of packages,
-    attempting to match the head directory of the distribution
-    '''
+    attempting to match the head directory of the distribution'''
     if not root: root = os.curdir
     print('searching %s...' % root)
     if package[0] != os.sep: package = os.sep+package
@@ -224,74 +223,135 @@ def findpackage(package,root=None,all=False):
     else: print('%s not found' % package)
     if all:
         return targetdir
-    return prunelist(targetdir,counter=os.sep,all=False)
+    return select(targetdir,counter=os.sep,minimum=True,all=False)
 
-def prunelist(targetlist,counter='',minimum=True,reverse=False,all=True):
-    '''prunelist(list[,counter,minimum,reverse,all]) --> pruned list'''
+#NOTE: broke backward compatibility January 18, 2014
+#      minimum=True --> minimum=False
+def select(iterable,counter='',minimum=False,reverse=False,all=True):
+    '''select(iterable[,counter,minimum,reverse,all]); Find items in iterable
+    with the minimum/maximum count of the given counter.
+
+    iterable: an iterable of iterables (e.g. a list of lists, list of strings)
+    counter: the item to count (e.g. counter=\'3\' counts occurances of \'3\')
+    minimum: if True, find items with minimum count; if False, find maximum
+    reverse: if True, reverse order of the results; if False, maintain order
+    all: if False, only return the first result
+
+    For example:
+        >>> z = [\'zero\',\'one\',\'two\',\'three\',\'4\',\'five\',\'six\',\'seven\',\'8\',\'9/81\']
+        >>> select(z, counter=\'e\')
+        [\'three\', \'seven\']
+        >>> select(z, counter=\'e\', minimum=True)
+        [\'two\', \'4\', \'six\', \'8\', \'9/81\']
+        >>>
+        >>> y = [[1,2,3],[4,5,6],[1,3,5]]
+        >>> select(y, counter=3)
+        [[1, 2, 3], [1, 3, 5]]
+        >>> select(y, counter=3, minumim=True, all=False)
+        [4, 5, 6]
+    '''
+    itype = type(iterable)
     m = []
-    for item in targetlist:
-        m.append(item.count(counter))
+    for item in iterable:
+        try: count = item.count(counter)
+        except TypeError: count = 0  # catches '33'.count(3) --> 0
+        except AttributeError: # catches 33.count(3) --> 0 (or 1)
+            count = 1 if item == counter else 0
+        m.append(count)
     if reverse:
         m.reverse()
-        targetlist.reverse()
+        iterable.reverse()
     if not m:
         if all == True:
-            return []
+            return itype([])
         else:
-            return ''
+            return None
     if minimum:
         x = min(m)
     else: x = max(m)
     if not all:
-        return targetlist[m.index(x)]
+        return iterable[m.index(x)]
     shortlist = []
     tmp = []
-    for item in targetlist: tmp.append(item)
+    for item in iterable: tmp.append(item)
     occurances = m.count(x)
     for i in range(occurances):
         shortlist.append(tmp.pop(m.index(x)))
         m.pop(m.index(x))
-    return shortlist
+    return itype(shortlist)
 
-def prunedict(target,counter='',minimum=True,all=True):
-    '''prunedict(dict[,counter,miminum,all]) --> pruned dict'''
-    keylist = []
-    vallist = []
-    for key,value in target.items():
-        keylist.append(key)
-        vallist.append(value)
-    shortlist = prunelist(vallist,counter,minimum,all=all)
-    shortdict = {}
+#NOTE: broke backward compatibility January 18, 2014
+#      minimum=True --> minimum=False
+def selectdict(dict,counter='',minimum=False,all=True):
+    '''selectdict(dict[,counter,minimum,all]); Return a dict of items with
+    the minimum/maximum count of the given counter.
+
+    dict: dict with iterables as values (e.g. values are strings or lists)
+    counter: the item to count (e.g. counter=\'3\' counts occurances of \'3\')
+    minimum: if True, find items with minimum count; if False, find maximum
+    all: if False, return a dict with only one item
+
+    For example:
+        >>> z = [\'zero\',\'one\',\'two\',\'three\',\'4\',\'five\',\'six\',\'seven\',\'8\',\'9/81\']
+        >>> z = dict(enumerate(z))
+        >>> selectdict(z, counter=\'e\')
+        {3: \'three\', 7: \'seven\'}
+        >>> selectdict(z, counter=\'e\', minimum=True)
+        {8: \'8\', 9: \'9/81\', 2: \'two\', 4: \'4\', 6: \'six\'}
+        >>>
+        >>> y = {1: [1,2,3], 2: [4,5,6], 3: [1,3,5]}
+        >>> selectdict(y, counter=3)
+        {1: [1, 2, 3], 3: [1, 3, 5]}
+        >>> selectdict(y, counter=3, minumim=True)
+        {2: [4, 5, 6]}
+    '''
+    keys,values = zip(*dict.items())
+    shortlist = select(values,counter,minimum,all=all)
     if not all:
-        x = vallist.index(shortlist)
-        shortdict[keylist[x]] = vallist[x]
-        return shortdict
-    for i in range(len(vallist)):
-        if vallist[i] in shortlist:
-            shortdict[keylist[i]] = vallist[i]
+        x = list(values).index(shortlist)
+        return {keys[x]: values[x]}
+    shortdict = {}
+    for i in range(len(values)):
+        if values[i] in shortlist:
+            shortdict.update({keys[i]: values[i]})
     return shortdict
 
-def makeTarget(target,host=None,user=None,forceSSH=False):
-    '''makeTarget(path[,host,user,forceSSH]) --> [[user@]host:]path'''
-    if forceSSH and not host: host = 'localhost'
-    if host:
-        target = '%s:%s' % (host,target)
-        if user:
-            target = '%s@%s' % (user,target)
-    return target
+#NOTE: broke backward compatibility January 18, 2014
+#      forceSSH --> loopback
+def remote(path,host=None,user=None,loopback=False):
+    """remote(path[,host,user,loopback]); Build string for remote connection
+    of the form [[user@]host:]path.
 
-def parseTarget(target,forceSSH=False,useOption=False):
-    """parseTarget(target[,forceSSH,useOption]) --> (login, host, path)
-    if useOption, then login will prepend '-l' if login is included"""
-    dpath = target.split(':')[-1]
-    rhost = target.split(':')[0]
+    path: path string for location of target on (remote) filesystem
+    host: string name/ip address of (remote) host
+    user: user name on (remote) host
+    loopback: if True, and host=None, then use host=localhost"""
+    if loopback and not host: host = 'localhost'
+    if host:
+        path = '%s:%s' % (host,path)
+        if user:
+            path = '%s@%s' % (user,path)
+    return path
+
+#NOTE: broke backward compatibility January 18, 2014
+#      forceSSH  --> loopback
+#      useOption --> login_flag          
+def parse_remote(path,loopback=False,login_flag=False):
+    """parse_remote(path[,loopback,login_flag]); Parse remote connection string
+    of the form [[user@]host:]path to a tuple of (user, host, path).
+
+    path: remote connection string
+    loopback: if True, and no host is found, then return host=localhost
+    login_flag: if True, prepend user name with \'-l\'"""
+    dpath = path.split(':')[-1]
+    rhost = path.split(':')[0]
     if rhost == dpath:
-        if forceSSH: return '','localhost',dpath
+        if loopback: return '','localhost',dpath
         return '','',dpath
     dhost = rhost.split('@')[-1]
     duser = rhost.split('@')[0]
     if duser == dhost: return '',dhost,dpath
-    if useOption: duser = '-l '+duser
+    if login_flag: duser = '-l '+duser
     return duser,dhost,dpath
 
 
@@ -300,6 +360,10 @@ makefilter = pattern
 getVars = getvars
 replaceText = replace
 getLines = index_join
+makeTarget = remote
+parseTarget = parse_remote
+prunelist = select
+prunedict = selectdict
 
 
 if __name__=='__main__':

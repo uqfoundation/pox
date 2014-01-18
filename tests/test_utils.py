@@ -55,33 +55,37 @@ def test():
     print findpackage('python*','/usr/lib',all=True)
     print findpackage('lib/python*',env('HOME',all=False),all=False)
 
-    print 'testing makeTarget...'
+    print 'testing remote...'
     myhost = 'login.cacr.caltech.edu'
-    print makeTarget('~/dev')
-    print makeTarget('~/dev',forceSSH=True)
-    print makeTarget('~/dev',host=myhost,user=username())
+    print remote('~/dev')
+    print remote('~/dev',loopback=True)
+    print remote('~/dev',host=myhost,user=username())
 
-    print 'testing parseTarget...'
+    print 'testing parse_remote...'
     destination = 'danse@%s:~/dev' % myhost
-    print parseTarget(destination,useOption=True)
+    print parse_remote(destination,login_flag=True)
     destination = 'danse@%s:' % myhost
-    print parseTarget(destination)
+    print parse_remote(destination)
     destination = '%s:' % myhost
-    print parseTarget(destination,useOption=True)
+    print parse_remote(destination,login_flag=True)
     destination = 'test.txt'
-    print parseTarget(destination,forceSSH=True)
+    print parse_remote(destination,loopback=True)
 
-    print 'testing prunelist...'
-    testlist = ['zero','one','two','three','4','five','six','seven','8','9/81']
-    print prunelist(testlist)
-    print prunelist(testlist,minimum=False)
-    print prunelist(testlist,minimum=False,reverse=True,all=False)
-    print prunelist(testlist,counter=os.sep,minimum=False,all=False)
+    print 'testing select...'
+    test = ['zero','one','two','three','4','five','six','seven','8','9/81']
+    print select(test)
+    print select(test,minimum=True)
+    print select(test,reverse=True,all=False)
+    print select(test,counter=os.sep,all=False)
+    test = [[1,2,3],[4,5,6],[1,3,5]]
+    print select(test)
+    print select(test,counter=3)
+    print select(test,counter=3,minimum=True)
 
-    print 'testing prunedict...'
-    print prunedict(bogusdict)
-    print prunedict(bogusdict,minimum=False,counter=os.sep)
-    print prunedict(bogusdict,minimum=False,counter=os.sep,all=False)
+    print 'testing selectdict...'
+    print selectdict(bogusdict,minimum=True)
+    print selectdict(bogusdict,counter=os.sep)
+    print selectdict(bogusdict,counter=os.sep,all=False)
     return
 
 if __name__=='__main__':
