@@ -168,17 +168,17 @@ def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
     if not all: return paths[0]
     return paths
     
-def find(items,root=None,recurse=True,type=None,verbose=False):
-    '''find(items[,root,recurse,type]); Get path to a file, directory, or link
+def find(patterns,root=None,recurse=True,type=None,verbose=False):
+    '''find(patterns[,root,recurse,type]); Get path to a file or directory
 
-    items: name or partial name string of items to search for
+    patterns: name or partial name string of items to search for
     root: path string of top-level directory to search
     recurse: if True, recurse down from root directory
     type: item filter; one of {None, file, dir, link, socket, block, char}
     verbose: if True, be a little verbose about the search
 
-    items can be specified with basic pattern matching. Additionally, multiple
-    items can be specified by splitting patterns with a \';'\
+    patterns can be specified with basic pattern matching. Additionally,
+    multiple patterns can be specified by splitting patterns with a \';'\
 
     For example:
         >>> find(\'pox*\', root=\'..\')
@@ -201,7 +201,7 @@ def find(items,root=None,recurse=True,type=None,verbose=False):
     try:
         if sys.platform[:3] == 'win': raise NotImplementedError
         pathlist = []
-        search_list = items.split(';')
+        search_list = patterns.split(';')
         for item in search_list:
             command = 'find %s -name %r' % (root, item)
             if type:
@@ -229,7 +229,7 @@ def find(items,root=None,recurse=True,type=None,verbose=False):
         elif type in ['l']: links = True
         elif type in ['d']: folders = True
         else: folders = True;files = True;links = True
-        pathlist = walk(root,items,recurse,folders,files,links)
+        pathlist = walk(root,patterns,recurse,folders,files,links)
     return pathlist
 
 def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):

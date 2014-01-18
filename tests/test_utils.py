@@ -8,20 +8,20 @@ import os
 def test():
     '''test(); script to test all functions'''
     from pox import *
-    print 'testing makefilter...'
-    print makefilter(['PYTHON*','DEVELOPER'])
-    print makefilter([])
+    print 'testing pattern...'
+    print pattern(['PYTHON*','DEVELOPER'])
+    print pattern([])
 
-    print 'testing getVars...'
+    print 'testing getvars...'
     bogusdict = {'PYTHIA_STUFF':'${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',
                  'MIKE_VERSION':'1.0','MIKE_DIR':'${HOME}/junk',
                  'DUMMY_VERSION':'6.9','DUMMY_STUFF':'/a/b',
                  'DV_DIR':'${HOME}/dev', 'PYTHIA_VERSION':'0.0.1'}
     home = homedir()
-    print getVars(home)
-    print getVars('${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',bogusdict)
-    print getVars('${MIKE_DIR}/stuff',bogusdict)
-    print getVars('${HOME}/stuff')
+    print getvars(home)
+    print getvars('${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',bogusdict)
+    print getvars('${MIKE_DIR}/stuff',bogusdict)
+    print getvars('${HOME}/stuff')
 
     print 'testing expandvars...'
     print expandvars(home)
@@ -29,6 +29,7 @@ def test():
     print expandvars('${MIKE_DIR}/${DV_DIR}/stuff',bogusdict)
     print expandvars('${DV_DIR}/${PYTHIA_VERSION}',secondref=bogusdict)
     print expandvars('${DV_DIR}/${PYTHIA_VERSION}',bogusdict,os.environ)
+    print expandvars('${HOME}/stuff')
 
     print 'testing convert...'
     source = 'test.txt'
@@ -38,22 +39,21 @@ def test():
     convert(source,'mac')
     convert(source)
 
-    print 'testing replaceText...'
-    replaceText(source,{' is ':' was '})
-    replaceText(source,{'\sfile.\s':'.'})
+    print 'testing replace...'
+    replace(source,{' is ':' was '})
+    replace(source,{'\sfile.\s':'.'})
     f = open(source,'r')
     print f.read()
     f.close()
     os.remove(source)
 
-    print 'testing getLines...'
+    print 'testing index_join...'
     fl = ['begin\n','hello\n','world\n','string\n']
-    print getLines(fl,'hello\n','world\n')
+    print index_join(fl,'hello\n','world\n')
 
     print 'testing findpackage...'
-   #print findpackage('pathos/pox',env('DV_DIR',all=False),1)
-   #print findpackage('dev/pythia*',env('DV_DIR',all=False))
-    print findpackage('python*','/usr/lib')
+    print findpackage('python*','/usr/lib',all=True)
+    print findpackage('lib/python*',env('HOME',all=False),all=False)
 
     print 'testing makeTarget...'
     myhost = 'login.cacr.caltech.edu'

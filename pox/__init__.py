@@ -29,9 +29,9 @@ __license__ = """
 from .shutils import shelltype, homedir, rootdir, username, sep, \
                      minpath, env, whereis, which, find, walk, where, \
                      mkdir, rmtree, shellsub
-from .utils import makefilter, expandvars, getVars, convert, replaceText, \
-                   getLines, findpackage, prunelist, prunedict, makeTarget, \
-                   parseTarget, kbytes, disk_used
+from .utils import pattern, expandvars, getvars, convert, replace, \
+                   findpackage, prunelist, prunedict, makeTarget, \
+                   parseTarget, kbytes, disk_used, index_slice, index_join
 
 
 def license():

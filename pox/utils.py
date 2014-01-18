@@ -13,34 +13,47 @@ import os
 from . import shutils
 from ._disk import kbytes, disk_used
 
-def makefilter(list=[],seperator=';'):
-    '''makefilter([list,seperator]) --> filter pattern generated from a list
-    returned filter is a string, with items seperated by seperator'''
+#NOTE: broke backward compatibility January 17, 2014
+#      seperator --> separator
+def pattern(list=[],separator=';'):
+    '''pattern([list,separator]); Generate a filter pattern from list of strings
+
+    The returned filter is a string, with items seperated by separator'''
     filter = ''
     for item in list:
-        filter += '%s%s' % (str(item),str(seperator))
-    return filter.rstrip(str(seperator))
+        filter += '%s%s' % (str(item),str(separator))
+    return filter.rstrip(str(separator))
 
 _varprog = None
-def expandvars(path,ref=None,secondref={}):
-    """expandvars(string[,ref,secondaryref]) --> string with replaced vars
-    vars will reference to ref first, and optionally secondref afterward.
+def expandvars(string,ref=None,secondref={}):
+    """expandvars(string[,ref,secondaryref]); expand shell variables in string
+
     Expand shell variables of form $var and ${var}.  Unknown variables
-    are left unchanged."""
-    if not ref: ref = os.environ
+    are left unchanged. If a reference dictionary (ref) is provided,
+    restrict the lookup to ref. A second reference dictionary (secondref)
+    can also be provided for failover searches. If ref is not provided,
+    lookup variables defined in the user\'s environment variables.
+
+    For example:
+        >>> expandvars(\'found:: $PYTHONPATH\')
+        \'found:: .:/Users/foo/lib/python3.4/site-packages\'
+
+        >>> expandvars(\'found:: $PYTHONPATH\', ref={})
+        \'found:: $PYTHONPATH\'
+    """
+    if ref is None: ref = os.environ
     refdict = {}
     refdict.update(secondref)
-    for key,value in ref.items():
-        refdict[key] = value
+    refdict.update(ref)
     global _varprog
-    if '$' not in path:
-        return path
+    if '$' not in string:
+        return string
     if not _varprog:
         import re
         _varprog = re.compile(r'\$(\w+|\{[^}]*\})')
     i = 0
     while True:
-        m = _varprog.search(path, i)
+        m = _varprog.search(string, i)
         if not m:
             break
         i, j = m.span(0)
@@ -48,29 +61,41 @@ def expandvars(path,ref=None,secondref={}):
         if name[:1] == '{' and name[-1:] == '}':
             name = name[1:-1]
         if name in refdict:
-            tail = path[j:]
-            path = path[:i] + refdict[name]
-            i = len(path)
-            path = path + tail
+            tail = string[j:]
+            string = string[:i] + refdict[name]
+            i = len(string)
+            string = string + tail
         else:
             i = j
-    return path
+    return string
 
-def getVars(value,vdict={}):
-    '''getVars(value[,vdict]) --> newdict
-    if value has environment variables, retrieve them from vdict;
-    or if vdict=None, get them from os.environ'''
+#NOTE: broke backward compatibility January 17, 2014
+#      vdict --> ref
+def getvars(path,ref=None):
+    '''getvars(path[,ref]); Get a dictionary of all variables defined in path
+
+    Extract shell variables of form $var and ${var}.  Unknown variables
+    will raise an exception. If a reference dictionary (ref) is provided,
+    first try the lookup in ref.  Failover from ref will lookup variables
+    defined in the user\'s environment variables.
+
+    For example:
+        >>> getvars(\'$HOME/stuff\')
+        {\'HOME\': \'/Users/foo\'}
+    '''
     #what about using os.path.expandvars ?
+    if ref is None: ref = {}
     ndict = {}
-    dirs = value.split(os.sep)
+    dirs = path.split(os.sep)
     for dir in dirs:
         if '$' in dir:
             key = dir.split('$')[1].lstrip('{').rstrip('}')
-            if vdict.has_key(key): #get the value from vdict
-                val = vdict[key]
-            else:  #get the current value or raise a KeyError
-                val = os.environ[key] #get the current environment value
-            ndict[key] = val
+            #get value from ref, or failing...
+            try:
+                ndict[key] = ref[key]
+            #get value from os.environ, or failing... raise a KeyError
+            except KeyError:
+                ndict[key] = os.environ[key]
     return ndict
 
 def convert(files,platform=None,pathsep=None):
@@ -90,32 +115,37 @@ def convert(files,platform=None,pathsep=None):
     elif platform in ['mac','macosx']: #???
         newlinesep = MAC
     else:
-        print "Error: Platform '%s' not recognized" % platform
-        return 0
-    allconverted = 1
-    import string
-    for file in string.split(files, pathsep):
+        print("Error: Platform '%s' not recognized" % platform)
+        return 2 # Error 2: platform not recognized
+    allconverted = 0 # Success
+    for file in files.split(pathsep):
         try:
             infile = open(file, 'r')
             filestring = infile.read()
             infile.close()
             for i in linesep:
-                filestring = string.replace(filestring, i, newlinesep)
+                filestring = filestring.replace(i, newlinesep)
             outfile = open(file, 'w')
             outfile.write(filestring)
             outfile.close()
-            print "Converted '%s' to '%s' format" % (file,platform)
+            print("Converted '%s' to '%s' format" % (file,platform))
         except:
-            print "File conversion failed for '%s'" % (file)
-            allconverted = 0
+            print("File conversion failed for '%s'" % (file))
+            allconverted = 1 # Error 1: file conversion failed
     return allconverted
 
-def replaceText(infile,sub={},outfile=None):
-    '''replaceText(infile,[sub,outfile]) --> replace text {old:new} in a file
-    this function uses regular expressions, if a pattern is given as old text
-    Note: this may fail if order of substitution is important'''
-    if outfile == None: outfile = infile
-    input = open(infile, 'r')
+def replace(file,sub={},outfile=None):
+    '''replace(file,[sub,outfile]); Replace text {old:new} in the given file
+
+    file: path to original file
+    sub: dictionary of strings to replace, with entries of {old:new}
+    outfile: if an outfile is given, don't overwrite the original file
+
+    replace uses regular expressions, thus a pattern may be given as old text.
+    Note this function can fail if order of substitution is important.'''
+    #XXX: use OrderedDict instead... would enable ordered substitutions
+    if outfile == None: outfile = file
+    input = open(file, 'r')
     filestring = input.read()
     input.close()
     import re
@@ -126,30 +156,57 @@ def replaceText(infile,sub={},outfile=None):
     output.close()
     return
 
-def getLines(fl,begin,end):
-    '''getLines(list,begin,end) --> get lines inclusive from begin to end'''
-    add = 0
-    for line in fl:
-        if line in [begin]:
-            chunk = line
-            if end is begin:
-                return chunk
-            add = 1
-        elif line in [end]:
-            chunk += line
-            add = 0
-        elif add == 1:
-            chunk += line
-    return chunk
+def index_slice(sequence,start,stop,step=1,sequential=False,inclusive=False):
+    '''index_slice(sequence,start,stop[,step,sequential,inclusive]);
+    Get the slice for a sequence, where the slice indicies are determined
+    by the positions of \'start\' and \'stop\' within the sequence.
 
-def findpackage(package,root=None,firstval=0):
-    '''findpackage(package[,root,firstval]) --> path(s) to package'''
+    If start is not found in the sequence, slice from the beginning. If stop
+    is not found in the sequence, slice to the end. If inclusive=False,
+    slicing will be performed with standard conventions (i.e. include start,
+    but not stop); if inclusive=True, stop will be included. If sequential,
+    then stop will not be searched for before start.'''
+    if start in sequence:
+        begin = sequence.index(start)
+    else: begin = None
+    if sequential: here = None
+    else: here = begin
+    if stop in sequence[here:]:
+        end = sequence[here:].index(stop)
+        if here: end += here
+    else: end = None
+    if inclusive and end != None: end += 1
+    return slice(begin,end,step)
+
+def index_join(sequence,start,stop,step=1,sequential=True,inclusive=True):
+    '''index_join(sequence,start,stop[,step,sequential,inclusive]);
+    Slices a list of strings, then joins the remaining strings.
+
+    If start is not found in the sequence, slice from the beginning. If stop
+    is not found in the sequence, slice to the end. If inclusive=False,
+    slicing will be performed with standard conventions (i.e. include start,
+    but not stop); if inclusive=True, stop will be included. If sequential,
+    then stop will not be searched for before start.'''
+    islice = index_slice(sequence,start,stop,step,sequential,inclusive)
+    return ''.join(sequence[islice])
+
+#NOTE: broke backward compatibility January 17, 2014
+#      firstval=False --> all=False
+def findpackage(package,root=None,all=False):
+    '''findpackage(package[,root,all]); Get path(s) for a source distribution
+
+    root: path string of top-level directory to search
+    all: if True, return list of paths where package is found
+
+    findpackage will do standard pattern matching for names of packages,
+    attempting to match the head directory of the distribution
+    '''
     if not root: root = os.curdir
-    print 'searching %s...' % root
+    print('searching %s...' % root)
     if package[0] != os.sep: package = os.sep+package
     packdir,basedir = os.path.split(package)
     targetdir = shutils.find(basedir,root,recurse=1,type='d')
-    #print "targetdir" ,targetdir
+    #print("targetdir: "+targetdir)
     #remove invalid candidate directories (and 'BLD_ROOT' & 'EXPORT_ROOT')
     bldroot = shutils.env('BLD_ROOT',all=False)
     exproot = shutils.env('EXPORT_ROOT',all=False)
@@ -163,9 +220,9 @@ def findpackage(package,root=None,firstval=0):
             remlist.append(dir) #build list of bad matches
     for dir in remlist:
         targetdir.remove(dir)
-    if targetdir: print '%s found' % package
-    else: print '%s not found' % package
-    if not firstval:
+    if targetdir: print('%s found' % package)
+    else: print('%s not found' % package)
+    if all:
         return targetdir
     return prunelist(targetdir,counter=os.sep,all=False)
 
@@ -236,6 +293,13 @@ def parseTarget(target,forceSSH=False,useOption=False):
     if duser == dhost: return '',dhost,dpath
     if useOption: duser = '-l '+duser
     return duser,dhost,dpath
+
+
+# backward compatability
+makefilter = pattern
+getVars = getvars
+replaceText = replace
+getLines = index_join
 
 
 if __name__=='__main__':
