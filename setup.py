@@ -23,7 +23,11 @@ except ImportError:
 # generate version number
 if os.path.exists('pox/info.py'):
     # is a source distribution, so use existing version
-    from pox.info import this_version
+    os.chdir('pox')
+    with open('info.py','r') as f:
+        f.readline() # header
+        this_version = f.readline().split()[-1].strip("'")
+    os.chdir('..')
 elif stable_version == target_version:
     # we are building a stable release
     this_version = target_version
@@ -98,20 +102,24 @@ Pox also provides utilities for filesystem exploration and manipulation::
 Current Release
 ===============
 
-The latest stable release version is pox-%(relver)s. You can download it here.
-The latest stable version of pox is always available at:
+This release version is pox-%(relver)s. You can download it here.
+The latest released version of pox is always available from:
 
     http://dev.danse.us/trac/pathos
+
+Pox is distributed under a 3-clause BSD license.
 
 
 Development Release
 ===================
 
-If you like living on the edge, and don't mind the promise
-of a little instability, you can get the latest development
-release with all the shiny new features at:
+You can get the latest development release with all the shiny new features at::
 
-    http://dev.danse.us/packages.
+    http://dev.danse.us/packages
+
+or even better, fork us on our github mirror of the svn trunk::
+
+    https://github.com/uqfoundation
 
 
 Installation
@@ -140,7 +148,7 @@ Requirements
 
 Pox requires::
 
-    - python, version >= 2.5, version < 3.0
+    - python2, version >= 2.5  *or*  python3, version >= 3.1
 
 Optional requirements::
 
@@ -156,16 +164,11 @@ that demonstrate pox's ability to interact with the operating system.
 Pox utilities can also be run directly from an operating system terminal,
 using the `pox_launcher.py` script.
 
-Important utilities and functions are found here::
-
-    - pox.pox.shutils             [low-level shell utilities]
-    - pox.pox.utils               [high-level shell utilities]
-
 
 License
 =======
 
-Pox is distributed under a modified BSD license.
+Pox is distributed under a 3-clause BSD license.
 
     >>> import pox
     >>> print pox.license()
@@ -253,16 +256,16 @@ setup_code += """
 """
 
 # exec the 'setup' code
-exec setup_code
+exec(setup_code)
 
 # if dependencies are missing, print a warning
 try:
     pass
 except ImportError:
-    print "\n***********************************************************"
-    print "WARNING: One of the following dependencies is unresolved:"
-#   print "    dummy %s" % dummy_version
-    print "***********************************************************\n"
+    print("\n***********************************************************")
+    print("WARNING: One of the following dependencies is unresolved:")
+#   print("    dummy %s" % dummy_version)
+    print("***********************************************************\n")
 
 
 if __name__=='__main__':

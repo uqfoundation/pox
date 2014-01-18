@@ -36,12 +36,12 @@ from .utils import pattern, expandvars, getvars, convert, replace, \
 
 def license():
     """print license"""
-    print __license__
+    print(__license__)
     return
 
 def citation():
     """print citation"""
-    print __doc__[-499:-140]
+    print(__doc__[-499:-140])
     return
 
 # end of file

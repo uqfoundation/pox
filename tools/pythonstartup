@@ -13,30 +13,43 @@
 try:
   import readline
 except ImportError:
-  print "Module readline not available."
+  print ("Module readline not available.")
 else:
   import rlcompleter
   import os
   import atexit
+  import sys
+
+  _PYTHON3 = (sys.version_info[0] == 3)
+  _version = 1  # {0: 'all-in-one', 1: 'different-major', 2: 'different-minor'}
+  _version = ".".join(str(i) for i in sys.version_info[:_version])
 
   try:
-    historyPath = os.environ["PYTHONHISTORY"]
+    historyPath = os.environ["PYTHONHISTORY"] + _version
   except KeyError:
-    historyPath = os.path.expanduser("~/.pyhistory")
-    print "Imported history from: '%s'" % historyPath
-    print "Set history file with PYTHONHISTORY."
+    historyPath = os.path.expanduser("~/.pyhistory" + _version)
+    print ("Imported history from: '%s'" % historyPath)
+    print ("Set history file with PYTHONHISTORY.")
   else:
     pass
+
+  try:
+    if os.path.exists(historyPath):
+      readline.read_history_file(historyPath)
+  except IOError:
+    print ("Error reading: '%s'" % historyPath)
+    print ("Skipping history.")
 
   def save_history(historyPath=historyPath):
     import readline
     readline.write_history_file(historyPath)
 
-  if os.path.exists(historyPath):
-    readline.read_history_file(historyPath)
-
   atexit.register(save_history)
 
-  readline.parse_and_bind("tab: complete")
+  if _PYTHON3:
+    readline.parse_and_bind("bind ^I rl_complete")
+  else:
+    readline.parse_and_bind("tab: complete")
 
-  del os, atexit, readline, rlcompleter, save_history, historyPath
+  del _PYTHON3
+  del os, sys, atexit, readline, rlcompleter, save_history, historyPath

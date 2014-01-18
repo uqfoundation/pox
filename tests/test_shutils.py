@@ -7,62 +7,64 @@ import os
 
 def test():
     '''test(); script to test all functions'''
-    from pox import *
-    print 'testing shelltype...'
-    print shelltype()
+    from pox import shelltype, homedir, rootdir, sep, mkdir, walk, where, \
+                    username, minpath, env, which, find, shellsub
 
-    print 'testing homedir...'
-    print homedir()
+    print('testing shelltype...')
+    print(shelltype())
 
-    print 'testing rootdir...'
-    print rootdir()
+    print('testing homedir...')
+    print(homedir())
 
-    print 'testing sep...'
-    print sep()
-    print sep('ext')
-#   print sep('foo')
+    print('testing rootdir...')
+    print(rootdir())
 
-    print 'testing mkdir...'
+    print('testing sep...')
+    print(sep())
+    print(sep('ext'))
+#   print(sep('foo'))
+
+    print('testing mkdir...')
     newdir = 'xxxtest/testxxx'
-    print mkdir(newdir)
-    print 'cleaning up...'
+    print(mkdir(newdir))
+    print('cleaning up...')
     os.removedirs(newdir)
 
-    print 'testing walk...'
-    print walk('/usr/local','*',recurse=0,folders=1,files=0)
+    print('testing walk...')
+    print(walk('/usr/local','*',recurse=0,folders=1,files=0))
     homedir = walk(homedir()+sep()+"..", username(), 0, 1)[0]
-    print homedir
-    print walk(homedir,'.bashrc',recurse=0)
+    print(homedir)
+    print(walk(homedir,'.bashrc',recurse=0))
 
-    print 'testing where...'
+    print('testing where...')
     bashrc = where('.bashrc',homedir)
-    print bashrc
+    print(bashrc)
 
-    print 'testing minpath...'
-    print minpath(os.path.expandvars('$PATH'))
+    print('testing minpath...')
+    print(minpath(os.path.expandvars('$PATH')))
 
-    print 'testing env...'
-    print env('TEST')
-    print env('HOME',all=False)
-    print env('TOOLS*')
-    print env('*PATH*',minimal=True)
+    print('testing env...')
+    print(env('TEST'))
+    print(env('HOME',all=False))
+    print(env('TOOLS*'))
+    print(env('*PATH*',minimal=True))
 
-    print 'testing username...'
-    print username()
+    print('testing username...')
+    print(username())
 
-    print 'testing which...'
-    print which('python')
-    print which('python',allow_links=False)
-    print which('python',all=True)
+    print('testing which...')
+    print(which('python'))
+    print(which('python',allow_links=False))
+    print(which('python',all=True))
 
-    print 'testing find...'
-    print find('python','/usr/local',type='l')
-    print find('*py;*txt')
+    print('testing find...')
+    print(find('python','/usr/local',type='l'))
+    print(find('*py;*txt'))
 
-    print 'testing shellsub...'
+    print('testing shellsub...')
     command = '${HOME}/bin/which foo("bar")'
-    print command
-    print shellsub(command)
+    print(command)
+    print(shellsub(command))
 
     return
 
