@@ -98,8 +98,8 @@ def getvars(path,ref=None):
                 ndict[key] = os.environ[key]
     return ndict
 
-def convert(files,platform=None,pathsep=None):
-    '''convert(files[,platform,pathsep])
+def convert(files,platform=None,pathsep=None,verbose=True):
+    '''convert(files[,platform,pathsep,verbose]);
     Convert text files to given platform type (os.linesep is not good enough)'''
     if not platform: platform = os.name
     if not pathsep: pathsep = os.pathsep
@@ -115,7 +115,7 @@ def convert(files,platform=None,pathsep=None):
     elif platform in ['mac','macosx']: #???
         newlinesep = MAC
     else:
-        print("Error: Platform '%s' not recognized" % platform)
+        if verbose: print("Error: Platform '%s' not recognized" % platform)
         return 2 # Error 2: platform not recognized
     allconverted = 0 # Success
     for file in files.split(pathsep):
@@ -128,9 +128,9 @@ def convert(files,platform=None,pathsep=None):
             outfile = open(file, 'w')
             outfile.write(filestring)
             outfile.close()
-            print("Converted '%s' to '%s' format" % (file,platform))
+            if verbose: print("Converted '%s' to '%s' format" % (file,platform))
         except:
-            print("File conversion failed for '%s'" % (file))
+            if verbose: print("File conversion failed for '%s'" % (file))
             allconverted = 1 # Error 1: file conversion failed
     return allconverted
 
@@ -192,16 +192,17 @@ def index_join(sequence,start,stop,step=1,sequential=True,inclusive=True):
 
 #NOTE: broke backward compatibility January 17, 2014
 #      firstval=False --> all=False
-def findpackage(package,root=None,all=False):
-    '''findpackage(package[,root,all]); Get path(s) for a source distribution
+def findpackage(package,root=None,all=False,verbose=True):
+    '''findpackage(package[,root,all,verbose]); Get path(s) for a package
 
     root: path string of top-level directory to search
     all: if True, return list of paths where package is found
+    verbose: print messages about the search
 
     findpackage will do standard pattern matching for names of packages,
     attempting to match the head directory of the distribution'''
     if not root: root = os.curdir
-    print('searching %s...' % root)
+    if verbose: print('searching %s...' % root)
     if package[0] != os.sep: package = os.sep+package
     packdir,basedir = os.path.split(package)
     targetdir = shutils.find(basedir,root,recurse=1,type='d')
@@ -219,8 +220,9 @@ def findpackage(package,root=None,all=False):
             remlist.append(dir) #build list of bad matches
     for dir in remlist:
         targetdir.remove(dir)
-    if targetdir: print('%s found' % package)
-    else: print('%s not found' % package)
+    if verbose:
+        if targetdir: print('%s found' % package)
+        else: print('%s not found' % package)
     if all:
         return targetdir
     return select(targetdir,counter=os.sep,minimum=True,all=False)
