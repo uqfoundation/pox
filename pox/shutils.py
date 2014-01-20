@@ -142,7 +142,7 @@ def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
 
     prog: name of an executable to search for (e.g. python)
     allow_links: if False, convert all links to the real paths
-    ignore_errors: if True, ignore errors (such as not finding \'prog'\)
+    ignore_errors: if True, ignore errors (e.g. not finding \'prog'\)
     all: if True, return list of paths where executable is found
 
     which searches the user\'s paths for the given executable

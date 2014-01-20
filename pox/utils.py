@@ -357,6 +357,36 @@ def parse_remote(path,loopback=False,login_flag=False):
     return duser,dhost,dpath
 
 
+def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
+    """which_python([version,lazy,fullpath,ignore_errors]);
+    get the command to launch the selected version of python
+
+    version: int (float) of major (minor) version number; if True, get default
+    lazy: if True, build a lazy-evaluating command (e.g. `which python`)
+    fullpath: if True, return the fullpath instead of relying on a $PATH lookup
+    ignore_errors: if True, ignore errors (e.g. not finding version=3.0)
+
+    which_python searches the user\'s path for python executables
+    """
+    target = "python"; tail = ""
+    import sys
+    if lazy and not (sys.platform[:3] == 'win'):
+        target = "`which python"; tail = "`"
+    # include version number
+    if str(version).startswith(('2','3','4','5','6','7','8','9','1','0')):
+        pyversion = str(version)
+    elif bool(version):
+        pyversion = ".".join(str(i) for i in sys.version_info[0:2])
+    else:
+        pyversion = ""
+    target = "".join([target, pyversion, tail])
+    # lookup full path
+    if not lazy and fullpath:
+        target = shutils.which(target, ignore_errors=True)
+    if not target: target = None #XXX: better None or "" ?
+    return target
+
+
 # backward compatability
 makefilter = pattern
 getVars = getvars

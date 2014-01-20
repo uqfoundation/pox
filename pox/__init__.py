@@ -30,7 +30,7 @@ from .shutils import shelltype, homedir, rootdir, username, sep, \
                      minpath, env, whereis, which, find, walk, where, \
                      mkdir, rmtree, shellsub
 from .utils import pattern, expandvars, getvars, convert, replace, \
-                   findpackage, select, selectdict, remote, \
+                   findpackage, select, selectdict, remote, which_python, \
                    parse_remote, kbytes, disk_used, index_slice, index_join
 
 
