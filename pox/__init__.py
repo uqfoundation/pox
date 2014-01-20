@@ -29,7 +29,7 @@ __license__ = """
 from .shutils import shelltype, homedir, rootdir, username, sep, \
                      minpath, env, whereis, which, find, walk, where, \
                      mkdir, rmtree, shellsub
-from .utils import pattern, expandvars, getvars, convert, replace, \
+from .utils import pattern, expandvars, getvars, convert, replace, wait_for, \
                    findpackage, select, selectdict, remote, which_python, \
                    parse_remote, kbytes, disk_used, index_slice, index_join
 

@@ -386,6 +386,32 @@ def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
     if not target: target = None #XXX: better None or "" ?
     return target
 
+def wait_for(path,sleep=1,tries=150,ignore_errors=False):
+    """wait_for(path[,sleep,tries,ignore_errors]);
+    block execution by waiting for a file to appear at the given path
+        
+    sleep: the time between checking results
+    tries: the number of times to try
+    ignore_errors: if True, ignore timeout error (number of tries exceeded)
+
+    Note, using subproc = Popen(...) and subproc.wait() is usually a better
+    approach. However, when a handle to the subprocess is unavailable, waiting
+    for a file to appear at a given path is a decent last resort.
+    """
+    from subprocess import call
+    maxcount = int(tries); counter = 0
+    while not os.path.exists(path):
+        call('sync', shell=True)
+        import time
+        # wait for results
+        time.sleep(sleep); counter += 1  
+        if counter >= maxcount:
+            if not ignore_errors:
+                raise IOError("%s not found" % path)
+            print("Warning: exceeded timeout (%s tries)" % maxcount)
+            break
+    return
+
 
 # backward compatability
 makefilter = pattern
