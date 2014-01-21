@@ -8,7 +8,7 @@ import os
 
 # set version numbers
 stable_version = '0.1a1'
-target_version = '0.2a'
+target_version = '0.2a1'
 is_release = False
 
 # check if easy_install is available

@@ -412,6 +412,71 @@ def wait_for(path,sleep=1,tries=150,ignore_errors=False):
             break
     return
 
+def namespace(obj):
+    """namespace(obj); return namespace hierarchy (as a list of names)
+    for the given object.
+
+    For example:
+
+    >>> from functools import partial
+    >>> p = partial(int, base=2)
+    >>> namespace(p)
+    [\'functools\', \'partial\']
+    >>>
+    >>> namespace(100)
+    [\'__builtin__\', \'int\']
+    """
+    import inspect
+    # mostly for functions and modules and such
+    try: #FIXME: this function needs some work and testing on different types
+        qual = str(inspect.getmodule(obj)).split()[1].strip('"').strip("'")
+        qual = qual.split('.')
+        if inspect.ismodule(obj):
+            return qual
+        return qual + [obj.__name__] #FIXME: can be wrong for aliased obj
+    except: pass
+    # mostly for classes and class instances and such
+    module = getattr(obj.__class__, '__module__', None)
+    qual = str(obj.__class__)
+    qual = qual[qual.index("'")+1:-2].split(".")
+    if module in ['builtins', '__builtin__']:
+        qual = [module] + qual
+    return qual
+
+def likely_import(obj, strict=False, passive=False):
+    """likely_import(obj[,strict,passive]); get the likely import string
+     for the given object
+
+    obj: the object to inspect
+    strict: if True, then don't apply known special cases
+    passive: if True, then don't try to verify with an attempted import
+    """
+    # for named things... with a nice repr
+    if '(' in repr(obj): name = repr(obj).split('(')[0]
+    else: name = None
+    # get the namespace
+    qual = namespace(obj)
+    first = '.'.join(qual[:-1])
+    last = qual[-1]
+    # get likely import string
+    if not first:
+        _str = "import %s" % last
+    else:
+        _str = "from %s import %s" % (first, last)
+    if not strict: # try some special cases
+        # numpy.array
+        if _str.endswith('ndarray'):
+            _str += ", array"
+        # XXX: other special cases...
+    if not passive:
+        try: exec(_str) # ... as __blah
+        except ImportError:
+            if not name:
+                raise # could do some checking against obj
+            _str = "from %s import %s" % (first, name)
+            exec(_str) #XXX: try except here too?
+    return _str
+
 
 # backward compatability
 makefilter = pattern
