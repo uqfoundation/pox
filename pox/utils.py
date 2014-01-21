@@ -412,18 +412,18 @@ def wait_for(path,sleep=1,tries=150,ignore_errors=False):
             break
     return
 
-def namespace(obj):
-    """namespace(obj); return namespace hierarchy (as a list of names)
+def _namespace(obj):
+    """_namespace(obj); return namespace hierarchy (as a list of names)
     for the given object.
 
     For example:
 
     >>> from functools import partial
     >>> p = partial(int, base=2)
-    >>> namespace(p)
+    >>> _namespace(p)
     [\'functools\', \'partial\']
     >>>
-    >>> namespace(100)
+    >>> _namespace(100)
     [\'__builtin__\', \'int\']
     """
     import inspect
@@ -455,27 +455,35 @@ def likely_import(obj, strict=False, passive=False):
     if '(' in repr(obj): name = repr(obj).split('(')[0]
     else: name = None
     # get the namespace
-    qual = namespace(obj)
+    qual = _namespace(obj)
     first = '.'.join(qual[:-1])
     last = qual[-1]
-    # get likely import string
-    if not first:
-        _str = "import %s" % last
-    else:
-        _str = "from %s import %s" % (first, last)
-    if not strict: # try some special cases
-        # numpy.array
-        if _str.endswith('ndarray'):
-            _str += ", array"
-        # XXX: other special cases...
-    if not passive:
-        try: exec(_str) # ... as __blah
-        except ImportError:
-            if not name:
-                raise # could do some checking against obj
-            _str = "from %s import %s" % (first, name)
-            exec(_str) #XXX: try except here too?
-    return _str
+    def _try(first, last):
+        # get likely import string
+        if not first:
+            _str = "import %s" % last
+        else:
+            _str = "from %s import %s" % (first, last)
+        if not strict: # try some special cases
+            # numpy.array
+            if _str.endswith('ndarray'):
+                _str += ", array"
+            # XXX: other special cases...
+            # FIXME: breaks on most decorators, currying, and such...
+            #        (could look for magic __wrapped__ or __func__ attr)
+        if not passive:
+            try: exec(_str) # ... as __blah
+            except ImportError:
+                _first = first.rsplit(".",1)[0]
+                if not _first: raise
+                _str = _try(_first, last)
+        return _str
+    try:
+        return _try(first, last)
+    except ImportError:
+        if name: # try again, but using name instead of last
+            return _try(first, name)
+        raise # could do some checking against obj
 
 
 # backward compatability
