@@ -443,46 +443,48 @@ def _namespace(obj):
         qual = [module] + qual
     return qual
 
-def likely_import(obj, strict=False, passive=False):
-    """likely_import(obj[,strict,passive]); get the likely import string
-     for the given object
+def _likely_import(first, last, passive=False):
+    # get likely import string
+    if not first:
+        _str = "import %s" % last
+    else:
+        _str = "from %s import %s" % (first, last)
+    # apply some special cases #FIXME: HACKERY!!! should be fixed upstream!!!
+    if first in ['builtins','__builtin__']:
+        # numpy.inf and nan
+        if last in ['inf','Inf','NaN','nan']: 
+            _str = "from numpy import %s" % last
+    # FIXME: breaks on most decorators, currying, and such...
+    #        (could look for magic __wrapped__ or __func__ attr)
+    if not passive:
+        try: exec(_str) # ... as __blah
+        except ImportError:
+            _first = first.rsplit(".",1)[0]
+            if not _first: raise
+            _str = _likely_import(_first, last, passive)
+    return _str
+
+def likely_import(obj, passive=False):
+    """likely_import(obj[,passive]); get the likely import string for
+    the given object
 
     obj: the object to inspect
-    strict: if True, then don't apply known special cases
     passive: if True, then don't try to verify with an attempted import
     """
     # for named things... with a nice repr
-    if '(' in repr(obj): name = repr(obj).split('(')[0]
+    if not repr(obj).startswith('<'): name = repr(obj).split('(')[0]
     else: name = None
     # get the namespace
     qual = _namespace(obj)
     first = '.'.join(qual[:-1])
     last = qual[-1]
-    def _try(first, last):
-        # get likely import string
-        if not first:
-            _str = "import %s" % last
-        else:
-            _str = "from %s import %s" % (first, last)
-        if not strict: # try some special cases
-            # numpy.array
-            if _str.endswith('ndarray'):
-                _str += ", array"
-            # XXX: other special cases...
-            # FIXME: breaks on most decorators, currying, and such...
-            #        (could look for magic __wrapped__ or __func__ attr)
-        if not passive:
-            try: exec(_str) # ... as __blah
-            except ImportError:
-                _first = first.rsplit(".",1)[0]
-                if not _first: raise
-                _str = _try(_first, last)
-        return _str
+    if name: # try using name instead of last
+        try:
+            return _likely_import(first, name, passive)
+        except ImportError: pass
     try:
-        return _try(first, last)
+        return _likely_import(first, last, passive)
     except ImportError:
-        if name: # try again, but using name instead of last
-            return _try(first, name)
         raise # could do some checking against obj
 
 
