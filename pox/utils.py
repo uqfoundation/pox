@@ -433,8 +433,16 @@ def _namespace(obj):
         qual = qual.split('.')
         if inspect.ismodule(obj):
             return qual
-        return qual + [obj.__name__] #FIXME: can be wrong for aliased obj
+        try: # special case: get the name of a lambda
+            from dill.source import getname
+            name = getname(obj)
+        except: #XXX: fails to get name or doesn't have dill
+            name = obj.__name__
+        return qual + [name] #XXX: can be wrong for some aliased objects
     except: pass
+    # special case: numpy.inf and numpy.nan (we don't want them as floats)
+    if str(obj) in ['inf','nan','Inf','NaN']: # is more, but are they needed?
+        return ['numpy'] + [str(obj)]
     # mostly for classes and class instances and such
     module = getattr(obj.__class__, '__module__', None)
     qual = str(obj.__class__)
@@ -446,23 +454,16 @@ def _namespace(obj):
     return qual
 
 def _likely_import(first, last, passive=False):
+    # we don't need to import from builtins, so return ''
+    if first in ['builtins','__builtin__']: return ''
     # get likely import string
-    if not first:
-        _str = "import %s" % last
-    else:
-        _str = "from %s import %s" % (first, last)
-    # apply some special cases #FIXME: HACKERY!!! should be fixed upstream!!!
-    if first in ['builtins','__builtin__']:
-        # numpy.inf and nan
-        if last in ['inf','Inf','NaN','nan']: 
-            _str = "from numpy import %s" % last
-        else:
-            _str = ''
+    if not first: _str = "import %s" % last
+    else: _str = "from %s import %s" % (first, last)
     # FIXME: breaks on most decorators, currying, and such...
     #        (could look for magic __wrapped__ or __func__ attr)
     if not passive:
        #print(_str)
-        try: exec(_str) # ... as __blah #XXX: check if == obj? (name collision)
+        try: exec(_str) #XXX: check if == obj? (name collision)
         except ImportError: #XXX: better top-down or bottom-up recursion?
             _first = first.rsplit(".",1)[0] #(or get all, then compare == obj?)
             if not _first: raise
@@ -477,19 +478,13 @@ def likely_import(obj, passive=False):
     obj: the object to inspect
     passive: if True, then don't try to verify with an attempted import
     """
-    # for named things... with a nice repr
+    # for named things... with a nice repr #XXX: move into _namespace?
     if not repr(obj).startswith('<'): name = repr(obj).split('(')[0]
     else: name = None
     # get the namespace
     qual = _namespace(obj)
     first = '.'.join(qual[:-1])
     last = qual[-1]
-    # special cases
-    if last in ['<lambda>']:
-        try:
-            from dill.source import getname
-            name = getname(obj)
-        except ImportError: pass #FIXME: doesn't have dill, so give up
     if name: # try using name instead of last
         try: return _likely_import(first, name, passive)
         except (ImportError,SyntaxError): pass
