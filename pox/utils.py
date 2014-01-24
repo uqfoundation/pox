@@ -456,8 +456,8 @@ def _likely_import(first, last, passive=False):
         # numpy.inf and nan
         if last in ['inf','Inf','NaN','nan']: 
             _str = "from numpy import %s" % last
-        if last in ['None']:
-            _str = "from types import NoneType"
+        else:
+            _str = ''
     # FIXME: breaks on most decorators, currying, and such...
     #        (could look for magic __wrapped__ or __func__ attr)
     if not passive:
