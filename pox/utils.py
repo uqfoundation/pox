@@ -438,7 +438,9 @@ def _namespace(obj):
     # mostly for classes and class instances and such
     module = getattr(obj.__class__, '__module__', None)
     qual = str(obj.__class__)
-    qual = qual[qual.index("'")+1:-2].split(".")
+    try: qual = qual[qual.index("'")+1:-2]
+    except ValueError: pass # str(obj.__class__) made the 'try' unnecessary
+    qual = qual.split(".")
     if module in ['builtins', '__builtin__']:
         qual = [module] + qual
     return qual
@@ -454,14 +456,18 @@ def _likely_import(first, last, passive=False):
         # numpy.inf and nan
         if last in ['inf','Inf','NaN','nan']: 
             _str = "from numpy import %s" % last
+        if last in ['None']:
+            _str = "from types import NoneType"
     # FIXME: breaks on most decorators, currying, and such...
     #        (could look for magic __wrapped__ or __func__ attr)
     if not passive:
-        try: exec(_str) # ... as __blah
-        except ImportError:
-            _first = first.rsplit(".",1)[0]
+       #print(_str)
+        try: exec(_str) # ... as __blah #XXX: check if == obj? (name collision)
+        except ImportError: #XXX: better top-down or bottom-up recursion?
+            _first = first.rsplit(".",1)[0] #(or get all, then compare == obj?)
             if not _first: raise
-            _str = _likely_import(_first, last, passive)
+            if _first != first:
+                _str = _likely_import(_first, last, passive)
     return _str
 
 def likely_import(obj, passive=False):
@@ -478,13 +484,18 @@ def likely_import(obj, passive=False):
     qual = _namespace(obj)
     first = '.'.join(qual[:-1])
     last = qual[-1]
-    if name: # try using name instead of last
+    # special cases
+    if last in ['<lambda>']:
         try:
-            return _likely_import(first, name, passive)
-        except ImportError: pass
+            from dill.source import getname
+            name = getname(obj)
+        except ImportError: pass #FIXME: doesn't have dill, so give up
+    if name: # try using name instead of last
+        try: return _likely_import(first, name, passive)
+        except (ImportError,SyntaxError): pass
     try:
         return _likely_import(first, last, passive)
-    except ImportError:
+    except (ImportError,SyntaxError):
         raise # could do some checking against obj
 
 
