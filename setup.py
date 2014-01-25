@@ -153,7 +153,6 @@ Pox requires::
 Optional requirements::
 
     - setuptools, version >= 0.6
-    - dill, version >= 0.2b2.dev
 
 
 Usage Notes
