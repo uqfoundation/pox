@@ -3,4 +3,4 @@
 # License: 3-clause BSD.  The full license text is available at:
 #  - http://trac.mystic.cacr.caltech.edu/project/pathos/browser/pox/LICENSE
 #
-# dummy __init__ file for dill scripts
+# dummy __init__ file for pox scripts
