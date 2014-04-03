@@ -4,7 +4,12 @@
 #          Lars Buitinck <L.J.Buitinck@uva.nl>
 # Copyright (c) 2010 Gael Varoquaux
 # License: BSD Style, 3 clauses.
-# Modified: Mike McKerns (December 2013)
+
+# Forked by: Mike McKerns (December 2013)
+# Author: Mike McKerns (mmckerns @caltech and @uqfoundation)
+# Copyright (c) 2013-2014 California Institute of Technology.
+# License: 3-clause BSD.  The full license text is available at:
+#  - http://trac.mystic.cacr.caltech.edu/project/pathos/browser/pox/LICENSE
 """
 Disk management utilities.
 """
