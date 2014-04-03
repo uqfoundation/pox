@@ -1,13 +1,13 @@
-"""
-Disk management utilities.
-"""
-
+#!/usr/bin/env python
+#
 # Authors: Gael Varoquaux <gael dot varoquaux at normalesup dot org>
 #          Lars Buitinck <L.J.Buitinck@uva.nl>
 # Copyright (c) 2010 Gael Varoquaux
 # License: BSD Style, 3 clauses.
 # Modified: Mike McKerns (December 2013)
-
+"""
+Disk management utilities.
+"""
 
 import os
 import shutil
