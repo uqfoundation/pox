@@ -58,7 +58,7 @@ Current Release
 The latest released version of pox is available from::
     http://trac.mystic.cacr.caltech.edu/project/pathos
 
-Pox is distributed under a modified BSD license.
+Pox is distributed under a 3-clause BSD license.
 
 Development Release
 -------------------
