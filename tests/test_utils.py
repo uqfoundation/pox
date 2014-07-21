@@ -20,15 +20,15 @@ def test():
     assert pattern([]) == ''
 
    #print('testing getvars...')
-    bogusdict = {'PYTHIA_STUFF':'${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',
+    bogusdict = {'QAZWERFDSXCV_STUFF':'${DV_DIR}/pythia-${QAZWERFDSXCV_VERSION}/stuff',
                  'MIKE_VERSION':'1.0','MIKE_DIR':'${HOME}/junk',
                  'DUMMY_VERSION':'6.9','DUMMY_STUFF':'/a/b',
-                 'DV_DIR':'${HOME}/dev', 'PYTHIA_VERSION':'0.0.1'}
+                 'DV_DIR':'${HOME}/dev', 'QAZWERFDSXCV_VERSION':'0.0.1'}
     home = homedir()
     assert getvars(home) == {}
-    d1 = {'DV_DIR': '${HOME}/dev', 'PYTHIA_VERSION': '0.0.1'}
+    d1 = {'DV_DIR': '${HOME}/dev', 'QAZWERFDSXCV_VERSION': '0.0.1'}
     d2 = {'MIKE_DIR': '${HOME}/junk'}
-    assert getvars('${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff',bogusdict) == d1
+    assert getvars('${DV_DIR}/pythia-${QAZWERFDSXCV_VERSION}/stuff',bogusdict) == d1
     assert getvars('${MIKE_DIR}/stuff',bogusdict) == d2
     assert getvars('${HOME}/stuff') == {'HOME': homedir()}
 
@@ -38,8 +38,8 @@ def test():
     assert expandvars(x) == x
     x = '${HOME}/junk/${HOME}/dev/stuff'
     assert expandvars('${MIKE_DIR}/${DV_DIR}/stuff',bogusdict) == x
-    assert expandvars('${DV_DIR}/${PYTHIA_VERSION}',secondref=bogusdict) == \
-           expandvars('${DV_DIR}/${PYTHIA_VERSION}',bogusdict,os.environ)
+    assert expandvars('${DV_DIR}/${QAZWERFDSXCV_VERSION}',secondref=bogusdict) == \
+           expandvars('${DV_DIR}/${QAZWERFDSXCV_VERSION}',bogusdict,os.environ)
     assert expandvars('${HOME}/stuff') == ''.join([homedir(), '/stuff'])
 
    #print('testing convert...')
@@ -63,8 +63,8 @@ def test():
     assert index_join(fl,'hello ','world ') == 'hello world '
 
    #print('testing findpackage...')
-    assert not findpackage('python','aoskvaosvoaskvoak',all=True,verbose=False)
-    p = findpackage('lib/python*',env('HOME',all=False),all=False,verbose=False)
+    assert not findpackage('python','aoskvaosvoaskvoak',all=True,verbose=False,recurse=False)
+    p = findpackage('lib/python*',env('HOME',all=False),all=False,verbose=False,recurse=1)
     if p: assert 'lib/python' in p
 
    #print('testing remote...')
@@ -101,7 +101,7 @@ def test():
    #print('testing selectdict...')
     x = {'MIKE_VERSION': '1.0', 'DUMMY_VERSION': '6.9'}
     assert selectdict(bogusdict,minimum=True) == x
-    x = {'DUMMY_STUFF': '/a/b', 'PYTHIA_STUFF': '${DV_DIR}/pythia-${PYTHIA_VERSION}/stuff'}
+    x = {'DUMMY_STUFF': '/a/b', 'QAZWERFDSXCV_STUFF': '${DV_DIR}/pythia-${QAZWERFDSXCV_VERSION}/stuff'}
     assert selectdict(bogusdict,counter='/') == x
     assert len(selectdict(bogusdict,counter='/',all=False)) == 1
     return

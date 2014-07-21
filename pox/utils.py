@@ -64,7 +64,7 @@ def expandvars(string,ref=None,secondref={}):
             name = name[1:-1]
         if name in refdict:
             tail = string[j:]
-            string = string[:i] + refdict[name]
+            string = string[:i] + expandvars(refdict[name], ref, secondref)
             i = len(string)
             string = string + tail
         else:
@@ -194,20 +194,22 @@ def index_join(sequence,start,stop,step=1,sequential=True,inclusive=True):
 
 #NOTE: broke backward compatibility January 17, 2014
 #      firstval=False --> all=False
-def findpackage(package,root=None,all=False,verbose=True):
+def findpackage(package,root=None,all=False,verbose=True,recurse=True):
     '''findpackage(package[,root,all,verbose]); Get path(s) for a package
 
     root: path string of top-level directory to search
     all: if True, return list of paths where package is found
     verbose: print messages about the search
+    recurse: if True, recurse down from root directory
 
+    On some OS, recursion can be specified by recursion depth (an integer).
     findpackage will do standard pattern matching for names of packages,
     attempting to match the head directory of the distribution'''
     if not root: root = os.curdir
     if verbose: print('searching %s...' % root)
     if package[0] != os.sep: package = os.sep+package
     packdir,basedir = os.path.split(package)
-    targetdir = shutils.find(basedir,root,recurse=1,type='d')
+    targetdir = shutils.find(basedir,root,recurse=recurse,type='d')
     #print("targetdir: "+targetdir)
     #remove invalid candidate directories (and 'BLD_ROOT' & 'EXPORT_ROOT')
     bldroot = shutils.env('BLD_ROOT',all=False)

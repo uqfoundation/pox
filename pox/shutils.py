@@ -179,6 +179,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
     type: item filter; one of {None, file, dir, link, socket, block, char}
     verbose: if True, be a little verbose about the search
 
+    On some OS, recursion can be specified by recursion depth (an integer).
     patterns can be specified with basic pattern matching. Additionally,
     multiple patterns can be specified by splitting patterns with a \';'\
 
@@ -210,6 +211,8 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
                 command += ' -type '+type
             if not recurse:
                 command += ' -maxdepth 1'
+            elif recurse is not True:
+                command += ' -maxdepth %d' % (int(recurse) + 1)
             if verbose: print(command)
             p = Popen(command, **popen4)
             p.stdin.close()
@@ -234,6 +237,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
         pathlist = walk(root,patterns,recurse,folders,files,links)
     return pathlist
 
+# TODO: enable recursion depth
 def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):
     '''walk(root[,patterns,recurse,folders,files,links]); walk directory tree
 
