@@ -20,11 +20,14 @@ except ImportError:
   print ("Module readline not available.")
 else:
   import rlcompleter
+  if 'libedit' in readline.__doc__:
+    readline.parse_and_bind("bind ^I rl_complete")
+  else:
+    readline.parse_and_bind("tab: complete")
   import os
   import atexit
   import sys
 
-  _PYTHON3 = (sys.version_info[0] == 3)
   _version = 1  # {0: 'all-in-one', 1: 'different-major', 2: 'different-minor'}
   _version = ".".join(str(i) for i in sys.version_info[:_version])
 
@@ -50,10 +53,5 @@ else:
 
   atexit.register(save_history)
 
-  if _PYTHON3:
-    readline.parse_and_bind("bind ^I rl_complete")
-  else:
-    readline.parse_and_bind("tab: complete")
-
-  del _PYTHON3
+  del _version
   del os, sys, atexit, readline, rlcompleter, save_history, historyPath
