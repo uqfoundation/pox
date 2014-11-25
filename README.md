@@ -30,11 +30,11 @@ to a remote filesystem.  In conjunction with a registry of environment
 variables and installed utilites, pox enables the user to interact with
 a remote filesystem as if they were logged in locally. 
 
-Pox is part of pathos, a python framework for heterogenous computing.
-Pox is in the early development stages, and any user feedback is
-highly appreciated. Contact Mike McKerns [mmckerns at caltech dot edu]
-with comments, suggestions, and any bugs you may find. A list of known
-issues is maintained at http://trac.mystic.cacr.caltech.edu/project/pathos/query.
+Pox is part of pathos, a python framework for heterogeneous computing.
+Pox is in active development, so any user feedback, bug reports, comments,
+or suggestions are highly appreciated.  A list of known issues is maintained
+at http://trac.mystic.cacr.caltech.edu/project/pathos/query, with a public
+ticket list at https://github.com/uqfoundation/pox/issues.
 
 
 Major Features
@@ -55,18 +55,44 @@ Pox also provides utilities for filesystem exploration and manipulation::
 
 Current Release
 ---------------
-The latest released version of pox is available from::
+The latest stable release of pox is available from::
     http://trac.mystic.cacr.caltech.edu/project/pathos
+
+or::
+    https://github.com/uqfoundation/pox/releases
+
+or also::
+    https://pypi.python.org/pypi/pox
 
 Pox is distributed under a 3-clause BSD license.
 
-Development Release
--------------------
-You can get the latest development release with all the shiny new features at::
-    http://dev.danse.us/packages.
 
-or even better, fork us on our github mirror of the svn trunk::
+Development Version
+-------------------
+You can get the latest development version with all the shiny new features at::
     https://github.com/uqfoundation
+
+Feel free to fork the github mirror of our svn trunk.  If you have a new
+contribution, please submit a pull request.
+
+
+More Information
+----------------
+Probably the best way to get started is to look at the tests that are
+provided within pox. See `pox.tests` for a set of scripts that demonstrate
+pox's ability to interact with the operating system.  Pox utilities can
+also be run directly from an operating system terminal, using the
+`pox_launcher.py` script.  The source code is also generally well
+documented, so further questions may be resolved by inspecting the code
+itself.  Please also feel free to submit a ticket on github, or ask a
+question on stackoverflow (@Mike McKerns).
+
+Pox is an active research tool. There are a growing number of publications
+and presentations that discuss real-world examples and new features of pox
+in greater detail than presented in the user's guide.  If you would like to
+share how you use pox in your work, please post a link or send an email
+(to mmckerns at caltech dot edu).
+
 
 Citation
 --------
@@ -82,18 +108,6 @@ acknowledge use of pox by citing the following in your publication::
     "pathos: a framework for heterogeneous computing", 2010- ;
     http://trac.mystic.cacr.caltech.edu/project/pathos
 
-More Information
-----------------
-Probably the best way to get started is to look at the tests
-that are provided within pox. See `pox.tests` for a set of scripts
-that demonstrate pox's ability to interact with the operating system.
-Pox utilities can also be run directly from an operating system terminal,
-using the `pox_launcher.py` script. The source code is also generally well documented,
-so further questions may be resolved by inspecting the code itself, or through 
-browsing the reference manual. For those who like to leap before
-they look, you can jump right to the installation instructions. If the aforementioned documents
-do not adequately address your needs, please send us feedback.
+Please see http://trac.mystic.cacr.caltech.edu/project/pathos or
+http://arxiv.org/pdf/1202.1056 for further information.
 
-Pox is an active research tool. There are a growing number of publications and presentations that
-discuss real-world examples and new features of pox in greater detail than presented in the user's guide. 
-If you would like to share how you use pox in your work, please send us a link.
