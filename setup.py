@@ -124,7 +124,7 @@ or also::
 Pox is distributed under a 3-clause BSD license.
 
     >>> import pox
-    >>> print pox.license()
+    >>> print (pox.license())
 
 
 Development Version
