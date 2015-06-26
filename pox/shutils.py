@@ -25,17 +25,21 @@ else:
 
 def shelltype():
     '''shelltype(); Get the name (e.g. \'bash\') of the current command shell'''
-    return os.path.basename(env('SHELL',all=False))
+    shell = env('SHELL',all=False) or env('SESSIONNAME',all=False)
+    if shell in ('Console',): shell = 'cmd' # or not?
+    return os.path.basename(shell) if shell else None
 
 def homedir():
     '''homedir(); Get the full path of the user\'s home directory'''
     try:
-        return os.path.expandvars('$HOME')
+        homedir = env('USERPROFILE',all=False) or os.path.expandvars('$HOME')
+        if '$' in homedir: raise ValueError
+        return homedir
     except:
         homedir = None
         directory = os.curdir
-        while homedir:
-            homedir = where(username(),directory)
+        while not homedir:
+            homedir = where(username(),os.path.abspath(directory))
             directory = os.path.join(os.pardir,directory)
         return homedir
 
@@ -48,7 +52,9 @@ def username():
     try:
         return os.getlogin()
     except:
-        return os.path.expandvars('$USER')
+        uname = os.path.expandvars('$USER')
+        if '$' in uname: uname = env('USERNAME', all=False)
+        return uname
 
 def sep(type=''):
     '''sep([type]); Get the seperator, type is one of {sep,line,path,ext,alt}'''
@@ -112,7 +118,7 @@ def env(variable,all=True,minimal=False):
 
 #NOTE: broke backward compatibility January 17, 2014
 #      listall --> all
-def whereis(prog,all=False): #Unix specific
+def whereis(prog,all=False): #Unix specific (Windows punts to which)
     '''whereis(prog[,all]); Get path to the given program
 
     prog: name of an executable to search for (e.g. python)
@@ -120,6 +126,7 @@ def whereis(prog,all=False): #Unix specific
 
     whereis searches standard binary install locations for the given executable
     '''
+    if sys.platform[:3] == 'win': return which(prog,all=all)
     whcom = 'whereis '
     p = Popen(whcom+prog, **popen4)
     p.stdin.close()
@@ -149,8 +156,17 @@ def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
 
     which searches the user\'s paths for the given executable
     '''
-    if sys.platform[:3] == 'win': raise NotImplementedError
-    #if os.name == "nt": raise NotImplementedError , "method 'which' is not yet implemented in Windows platform"
+    if sys.platform[:3] == 'win':
+        if not prog.endswith('.exe'): prog += '.exe' # or not?
+        dirs = env('PATH',all=False) or os.path.abspath(os.curdir) # ?
+        paths = []
+        _type = None if allow_links else 'file'
+        for _dir in dirs.split(os.pathsep):
+            if all and paths: break
+            paths += find(prog, root=_dir, recurse=False, type=_type)
+        if not all: return paths[0] if len(paths) else ''
+        return paths
+    # non-windows
     whcom = 'which '
     if all: whcom += '-a '
     p = Popen(whcom+prog, **popen4)
@@ -167,7 +183,7 @@ def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
     for i in range(len(paths)):
         if not allow_links and os.path.islink(paths[i]):
             paths[i] = os.path.realpath(paths[i])
-    if not all: return paths[0]
+    if not all: return paths[0] if len(paths) else ''
     return paths
     
 def find(patterns,root=None,recurse=True,type=None,verbose=False):

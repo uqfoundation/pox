@@ -8,6 +8,7 @@
 test pox's higher-level shell utilities
 """
 import os
+import sys
 
 def test():
     '''test(); script to test all functions'''
@@ -28,9 +29,10 @@ def test():
     assert getvars(home) == {}
     d1 = {'DV_DIR': '${HOME}/dev', 'QAZWERFDSXCV_VERSION': '0.0.1'}
     d2 = {'MIKE_DIR': '${HOME}/junk'}
-    assert getvars('${DV_DIR}/pythia-${QAZWERFDSXCV_VERSION}/stuff',bogusdict) == d1
-    assert getvars('${MIKE_DIR}/stuff',bogusdict) == d2
-    assert getvars('${HOME}/stuff') == {'HOME': homedir()}
+    assert getvars('${DV_DIR}/pythia-${QAZWERFDSXCV_VERSION}/stuff',bogusdict,'/') == d1
+    assert getvars('${MIKE_DIR}/stuff',bogusdict,'/') == d2
+    _home = 'USERPROFILE' if sys.platform[:3] == 'win' else 'HOME'
+    assert getvars('${%s}/stuff' % _home, sep='/') == {_home: homedir()}
 
    #print('testing expandvars...')
     assert expandvars(home) == homedir()
@@ -40,7 +42,7 @@ def test():
     assert expandvars('${MIKE_DIR}/${DV_DIR}/stuff',bogusdict) == x
     assert expandvars('${DV_DIR}/${QAZWERFDSXCV_VERSION}',secondref=bogusdict) == \
            expandvars('${DV_DIR}/${QAZWERFDSXCV_VERSION}',bogusdict,os.environ)
-    assert expandvars('${HOME}/stuff') == ''.join([homedir(), '/stuff'])
+    assert expandvars('${%s}/stuff' % _home) == ''.join([homedir(), '/stuff'])
 
    #print('testing convert...')
     source = 'test.txt'
@@ -54,7 +56,7 @@ def test():
     replace(source,{' is ':' was '})
     replace(source,{'\sfile.\s':'.'})
     f = open(source,'r')
-    assert f.read() == 'this was a test.'
+    assert f.read().rstrip() == 'this was a test.'
     f.close()
     os.remove(source)
 

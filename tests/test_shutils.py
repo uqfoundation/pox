@@ -68,13 +68,13 @@ def test():
 
    #print('testing env...')
     assert env('ACSDAGHQSBFCASDCOMAOCMQOMCQWMOCQOMCOMQRCVOMQOCMQORMCQ') == {}
-    assert env('HOME',all=False) == homedir()
+    assert env('HOME',all=False) or env('USERPROFILE',all=False) == homedir()
     pathdict = env('*PATH*',minimal=True)
     assert len(pathdict) > 0
     assert all('PATH' in key for key in pathdict)
 
    #print('testing which...')
-    assert which('python').endswith('python')
+    assert which('python').endswith(('python','python.exe'))
     assert which('python') in which('python',all=True)
 
    #print('testing find...')

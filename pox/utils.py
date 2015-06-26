@@ -73,13 +73,14 @@ def expandvars(string,ref=None,secondref={}):
 
 #NOTE: broke backward compatibility January 17, 2014
 #      vdict --> ref
-def getvars(path,ref=None):
+def getvars(path,ref=None,sep=None):
     '''getvars(path[,ref]); Get a dictionary of all variables defined in path
 
     Extract shell variables of form $var and ${var}.  Unknown variables
     will raise an exception. If a reference dictionary (ref) is provided,
     first try the lookup in ref.  Failover from ref will lookup variables
-    defined in the user\'s environment variables.
+    defined in the user\'s environment variables.  Use sep to override the
+    path separator (os.sep).
 
     For example:
         >>> getvars(\'$HOME/stuff\')
@@ -88,7 +89,7 @@ def getvars(path,ref=None):
     #what about using os.path.expandvars ?
     if ref is None: ref = {}
     ndict = {}
-    dirs = path.split(os.sep)
+    dirs = path.split(sep or os.sep)
     for dir in dirs:
         if '$' in dir:
             key = dir.split('$')[1].lstrip('{').rstrip('}')
@@ -404,8 +405,9 @@ def wait_for(path,sleep=1,tries=150,ignore_errors=False):
     """
     from subprocess import call
     maxcount = int(tries); counter = 0
+    sync = shutils.which('sync', all=False)
     while not os.path.exists(path):
-        call('sync', shell=True)
+        if sync: call('sync', shell=True)
         import time
         # wait for results
         time.sleep(sleep); counter += 1  
