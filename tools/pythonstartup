@@ -34,7 +34,7 @@ else:
   try:
     historyPath = os.environ["PYTHONHISTORY"] + _version
   except KeyError:
-    historyPath = os.path.expanduser("~/.pyhistory" + _version)
+    historyPath = os.path.expanduser("~"+os.sep+".pyhistory" + _version)
     print ("Imported history from: '%s'" % historyPath)
     print ("Set history file with PYTHONHISTORY.")
   else:
