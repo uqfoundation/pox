@@ -157,7 +157,8 @@ def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
     which searches the user\'s paths for the given executable
     '''
     if sys.platform[:3] == 'win':
-        if not prog.endswith('.exe'): prog += '.exe' # or not?
+        # try to deal with windows laziness about extensions
+        if not prog.endswith('.exe'): prog += '' if prog.count('.') else '.exe'
         dirs = env('PATH',all=False) or os.path.abspath(os.curdir) # ?
         paths = []
         _type = None if allow_links else 'file'
