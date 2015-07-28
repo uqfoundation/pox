@@ -387,7 +387,13 @@ def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
     target = "".join([target, pyversion, tail])
     # lookup full path
     if not lazy and fullpath:
-        target = shutils.which(target, ignore_errors=True)
+        #XXX: better to use 'version' kwd directly...?
+        version = pyversion.split('.')
+        sysversion = sys.version_info[:len(version)]
+        if not pyversion or tuple(int(i) for i in version) == sysversion:
+            target = sys.executable
+        else:
+            target = shutils.which(target, ignore_errors=True)
     if not target: target = None #XXX: better None or "" ?
     return target
 
