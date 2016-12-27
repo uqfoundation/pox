@@ -80,7 +80,8 @@ def test():
    #print('testing find...')
    #print(find('python','/usr/local',type='l'))
    #print(find('*py;*txt'))
-    assert find('test_*','.',False,'f') == find('*py;*txt',recurse=False)
+    x = 'tests' if find('setup.py', recurse=False) else '.'
+    assert find('test_*',x,False,'f') == find('*py;*txt',x,recurse=False)
 
    #print('testing shellsub...')
     command = '${HOME}/bin/which foo("bar")'
