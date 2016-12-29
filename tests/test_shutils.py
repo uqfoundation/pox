@@ -19,8 +19,12 @@ def test():
     try:
         assert shell in ['bash','sh','csh','zsh','tcsh','ksh','rc','es','cmd']
     except AssertionError:
-        print("Warning: non-standard shell type")
-        assert isinstance(shell, str)
+        if shell:
+            print("Warning: non-standard shell type")
+            assert isinstance(shell, str)
+        else:
+            print("Warning: could not determine shell type")
+            assert shell is None
 
    #print('testing username...')
    #print(username())
@@ -68,6 +72,8 @@ def test():
 
    #print('testing env...')
     assert env('ACSDAGHQSBFCASDCOMAOCMQOMCQWMOCQOMCOMQRCVOMQOCMQORMCQ') == {}
+    if 'HOME' not in os.environ:
+        os.environ['HOME'] = homedir()
     assert env('HOME',all=False) or env('USERPROFILE',all=False) == homedir()
     pathdict = env('*PATH*',minimal=True)
     assert len(pathdict) > 0
@@ -81,7 +87,7 @@ def test():
    #print(find('python','/usr/local',type='l'))
    #print(find('*py;*txt'))
     x = 'tests' if find('setup.py', recurse=False) else '.'
-    assert find('test_*',x,False,'f') == find('*py;*txt',x,recurse=False)
+    assert find('__init__*;test_*',x,False,'f') == find('*py',x,recurse=False)
 
    #print('testing shellsub...')
     command = '${HOME}/bin/which foo("bar")'

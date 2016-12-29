@@ -26,12 +26,14 @@ def test():
                  'DUMMY_VERSION':'6.9','DUMMY_STUFF':'/a/b',
                  'DV_DIR':'${HOME}/dev', 'QAZWERFDSXCV_VERSION':'0.0.1'}
     home = homedir()
+    if 'HOME' not in os.environ:
+        os.environ['HOME'] = home
     assert getvars(home) == {}
     d1 = {'DV_DIR': '${HOME}/dev', 'QAZWERFDSXCV_VERSION': '0.0.1'}
     d2 = {'MIKE_DIR': '${HOME}/junk'}
     assert getvars('${DV_DIR}/pythia-${QAZWERFDSXCV_VERSION}/stuff',bogusdict,'/') == d1
     assert getvars('${MIKE_DIR}/stuff',bogusdict,'/') == d2
-    _home = 'USERPROFILE' if sys.platform[:3] == 'win' else 'HOME'
+    _home = 'HOME'
     assert getvars('${%s}/stuff' % _home, sep='/') == {_home: homedir()}
 
    #print('testing expandvars...')
