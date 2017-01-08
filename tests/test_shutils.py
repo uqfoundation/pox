@@ -10,8 +10,8 @@ test pox's shell utilities
 """
 import os
 
-def test():
-    '''test(); script to test all functions'''
+def test_shutils():
+    '''script to test all shutils functions'''
     from pox import shelltype, homedir, rootdir, sep, mkdir, walk, where, \
                     username, minpath, env, which, find, shellsub, expandvars
 
@@ -100,7 +100,4 @@ def test():
 
 
 if __name__=='__main__':
-    test()
-
-
-# End of file 
+    test_shutils()

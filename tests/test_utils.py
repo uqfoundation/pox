@@ -11,8 +11,8 @@ test pox's higher-level shell utilities
 import os
 import sys
 
-def test():
-    '''test(); script to test all functions'''
+def test_utils():
+    '''script to test all utils functions'''
     from pox import pattern, getvars, expandvars, convert, replace, \
                     index_join, findpackage, remote, parse_remote, \
                     select, selectdict, env, homedir, username
@@ -112,7 +112,4 @@ def test():
     return
 
 if __name__=='__main__':
-    test()
-
-
-# End of file 
+    test_utils()
