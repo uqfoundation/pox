@@ -177,7 +177,7 @@ Probably the best way to get started is to look at the tests that are
 provided within `pox`. See `pox.tests` for a set of scripts that demonstrate
 how `pox` can be used to interact with the operating system. `pox` utilities
 can also be run directly from an operating system terminal, using the
-`pox_launcher.py` script.  The source code is also generally well
+`pox_launcher` script.  The source code is also generally well
 documented, so further questions may be resolved by inspecting the code
 itself.  Please also feel free to submit a ticket on github, or ask a
 question on stackoverflow (@Mike McKerns).
@@ -270,7 +270,7 @@ if has_setuptools:
 # close 'setup' call
 setup_code += """    
       zip_safe=True,
-      scripts=['scripts/pox_launcher.py'])
+      scripts=['scripts/pox_launcher'])
 """
 
 # exec the 'setup' code
