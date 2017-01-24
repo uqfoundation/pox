@@ -15,7 +15,7 @@ pox.egg-info/dependency_links.txt
 pox.egg-info/requires.txt
 pox.egg-info/top_level.txt
 pox.egg-info/zip-safe
-scripts/pox_launcher
+scripts/pox_launcher.py
 tests/test_shutils.py
 tests/test_utils.py
 tools/README

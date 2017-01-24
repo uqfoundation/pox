@@ -203,7 +203,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
 
     For example:
         >>> find(\'pox*\', root=\'..\')
-        [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher\']
+        [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher.py\']
 
         >>> find(\'*shutils*;*init*\')
         [\'/Users/foo/pox/pox/shutils.py\', \'/Users/foo/pox/pox/__init__.py\']
@@ -273,7 +273,7 @@ def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):
 
     For example:
         >>> walk(\'..\', patterns=\'pox*\')
-        [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher\']
+        [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher.py\']
 
         >>> walk(\'.\', patterns=\'*shutils*;*init*\')
         [\'/Users/foo/pox/pox/shutils.py\', \'/Users/foo/pox/pox/__init__.py\']
