@@ -10,7 +10,7 @@ the pox command launcher::
     - run any of the pox commands at the command shell prompt
 
 For example::
-    $ pox_launcher "which('python')"
+    $ pox_launcher.py "which('python')"
 """
 from pox import *
 
@@ -18,7 +18,7 @@ def help():
     #XXX: better would be to provide a list of available commands
     print("Please provide a 'pox' command enclosed in quotes.\n")
     print("For example:")
-    print("  $ pox_launcher \"which('python')\"")
+    print("  $ pox_launcher.py \"which('python')\"")
     return
 
 
