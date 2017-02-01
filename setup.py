@@ -163,7 +163,7 @@ Requirements
 
 `pox` requires::
 
-    - python2, version >= 2.5  *or*  python3, version >= 3.1
+    - python2, version >= 2.5  *or*  python3, version >= 3.1  *or*  pypy
 
 Optional requirements::
 
