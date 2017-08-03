@@ -33,7 +33,7 @@ a remote filesystem as if they were logged in locally.
 `pox` is part of `pathos`, a python framework for heterogeneous computing.
 `pox` is in active development, so any user feedback, bug reports, comments,
 or suggestions are highly appreciated.  A list of known issues is maintained
-at http://trac.mystic.cacr.caltech.edu/project/pathos/query, with a public
+at http://trac.mystic.cacr.caltech.edu/project/pathos/query.html, with a public
 ticket list at https://github.com/uqfoundation/pox/issues.
 
 
@@ -56,13 +56,7 @@ Major Features
 Current Release
 ---------------
 The latest released version of `pox` is available from::
-    http://trac.mystic.cacr.caltech.edu/project/pathos
-
-or::
-    https://github.com/uqfoundation/pox/releases
-
-or also::
-    https://pypi.python.org/pypi/pox
+    https://pypi.org/project/pox
 
 `pox` is distributed under a 3-clause BSD license.
 
