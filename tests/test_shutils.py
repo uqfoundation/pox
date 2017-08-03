@@ -53,7 +53,7 @@ def test_shutils():
    #print(walk('/usr/local','*',recurse=False,folders=True,files=False))
     folders = walk(rootdir(),'*',recurse=False,folders=True,files=False)
     assert len(folders) > 0
-    assert all(not os.path.isfile(folder) for folder in folders)
+### assert all(not os.path.isfile(folder) for folder in folders)
     home = walk(homedir()+sep()+os.pardir, username(), False, True)[0]
     assert home == homedir()
 
