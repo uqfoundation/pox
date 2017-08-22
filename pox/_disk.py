@@ -22,7 +22,14 @@ import time
 
 
 def disk_used(path):
-    """disk_used(path); Return the disk usage in a directory"""
+    """get the disk usage for the given directory
+
+    Args:
+        path (str): path string.
+
+    Returns:
+        int corresponding to disk usage in blocks.
+    """
     size = 0
     for file in os.listdir(path) + ['.']:
         stat = os.stat(os.path.join(path, file))
@@ -38,11 +45,18 @@ def disk_used(path):
 
 
 def kbytes(text):
-    """kbytes(text); Convert memory text to the corresponding value in kilobytes
+    """convert memory text to the corresponding value in kilobytes
 
-    For example:
+    Args:
+        text (str): string corresponding to an abbreviation of size.
+
+    Returns:
+        int representation of text.
+
+    Examples:
         >>> kbytes(\'10K\')
         10
+
         >>> kbytes(\'10G\')
         10485760
     """
@@ -63,17 +77,27 @@ def kbytes(text):
 RM_SUBDIRS_RETRY_TIME = 0.1
 
 def rmtree(path, self=True, ignore_errors=False, onerror=None):
-    """rmtree(path,[,self,ignore_errors,onerror]); Remove directories in path
+    """remove directories in the given path
 
-    If self=False, the directory indicated by path is left in place,
-    and its subdirectories are erased. If self=True, path is also removed.
+    Args:
+        path (str): path string of root of directories to delete.
+        self (bool, default=True): if False, delete subdirectories, not path.
+        ignore_errors (bool, default=False): if True, silently ignore errors.
+        onerror (function, default=None): custom error handler.
 
-    If ignore_errors is set, errors are ignored; otherwise, if onerror is set,
-    it is called to handle the error with arguments (func, path, exc_info)
-    where func is os.listdir, os.remove, or os.rmdir; path is the argument
-    to that function that caused it to fail; and exc_info is a tuple returned
-    by sys.exc_info().  If ignore_errors is False and onerror is None,
-    an exception is raised.
+    Returns:
+        None
+
+    Note:
+        If self=False, the directory indicated by path is left in place,
+        and its subdirectories are erased. If self=True, path is also removed.
+
+    Note:
+        If ignore_errors=True, errors are ignored. Otherwise, onerror is called        to handle the error with arguments ``(func, path, exc_info)``, where
+        *func* is ``os.listdir``, ``os.remove``, or ``os.rmdir``; *path* is the
+        argument to the function that caused it to fail; and *exc_info* is a
+        tuple returned by ``sys.exc_info()``. If ignore_errors=False and
+        onerror=None, an exception is raised.
     """
     names = []
     try:

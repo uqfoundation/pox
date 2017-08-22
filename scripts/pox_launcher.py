@@ -6,16 +6,34 @@
 # License: 3-clause BSD.  The full license text is available at:
 #  - https://github.com/uqfoundation/pox/blob/master/LICENSE
 """
-the pox command launcher::
-    - run any of the pox commands at the command shell prompt
+run any of the pox commands from the command shell prompt
 
-For example::
+Note:
+    to get help, type ``$ pox_launcher.py`` at a shell terminal prompt.
+
+Note:
+    incorrect function invocation will print the function's doc string.
+
+Examples::
+
     $ pox_launcher.py "which('python')"
+    /usr/bin/python
 """
 from pox import *
+from inspect import isfunction
 
-def help():
+def help(function=None):
     #XXX: better would be to provide a list of available commands
+    if function == 'pox':
+        print([key for (key,val) in globals().items() if isfunction(val) and not key.startswith('_')])
+        return
+    try:
+        function = eval(function)
+        if isfunction(function):
+            print(function.__doc__)
+            return
+    except:
+        pass
     print("Please provide a 'pox' command enclosed in quotes.\n")
     print("For example:")
     print("  $ pox_launcher.py \"which('python')\"")
@@ -31,7 +49,7 @@ if __name__=='__main__':
         try:
             exec('print(%s)' % func)
         except:
-            print("Error: incorrect syntax '%s'" % func)
+            print("Error: incorrect syntax '%s'\n" % func)
             exec('print(%s.__doc__)' % func.split('(')[0])
     else: help()
 

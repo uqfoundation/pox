@@ -4,14 +4,18 @@ pox package documentation
 =========================
 
 .. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+    :maxdepth: 4
+    :caption: Contents:
+
+    pox
+    scripts
 
 .. automodule:: pox
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+    :members:
+    :undoc-members:
+    :private-members:
+    :special-members:
+    :show-inheritance:
 
 Indices and tables
 ==================

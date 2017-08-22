@@ -19,9 +19,15 @@ from ._disk import kbytes, disk_used
 #NOTE: broke backward compatibility January 17, 2014
 #      seperator --> separator
 def pattern(list=[],separator=';'):
-    '''pattern([list,separator]); Generate a filter pattern from list of strings
+    '''generate a filter pattern from list of strings
 
-    The returned filter is a string, with items seperated by separator'''
+    Args:
+        list (list(str), default=[]): a list of filter elements.
+        separator (str, default=';'): the separator string.
+
+    Returns:
+        a string composed of filter elements joined by the separator.
+    '''
     filter = ''
     for item in list:
         filter += '%s%s' % (str(item),str(separator))
@@ -29,15 +35,23 @@ def pattern(list=[],separator=';'):
 
 _varprog = None
 def expandvars(string,ref=None,secondref={}):
-    """expandvars(string[,ref,secondaryref]); expand shell variables in string
+    """expand shell variables in string
 
-    Expand shell variables of form $var and ${var}.  Unknown variables
-    are left unchanged. If a reference dictionary (ref) is provided,
-    restrict the lookup to ref. A second reference dictionary (secondref)
-    can also be provided for failover searches. If ref is not provided,
-    lookup variables defined in the user\'s environment variables.
+    Expand shell variables of form ``$var`` and ``${var}``. Unknown variables
+    are left unchanged. If a reference dictionary (*ref*) is provided,
+    restrict lookups to *ref*. A second reference dictionary (*secondref*)
+    can also be provided for failover searches. If *ref* is not provided,
+    lookup variables are defined by the user\'s environment variables.
 
-    For example:
+    Args:
+        string (str): a string with shell variables.
+        ref (dict(str), default=None): a dict of lookup variables.
+        secondref (dict(str), default={}): a failover reference dict.
+
+    Returns:
+        string with the selected shell variables substituted.
+
+    Examples:
         >>> expandvars(\'found:: $PYTHONPATH\')
         \'found:: .:/Users/foo/lib/python3.4/site-packages\'
 
@@ -75,15 +89,23 @@ def expandvars(string,ref=None,secondref={}):
 #NOTE: broke backward compatibility January 17, 2014
 #      vdict --> ref
 def getvars(path,ref=None,sep=None):
-    '''getvars(path[,ref]); Get a dictionary of all variables defined in path
+    '''get a dictionary of all variables defined in path
 
-    Extract shell variables of form $var and ${var}.  Unknown variables
-    will raise an exception. If a reference dictionary (ref) is provided,
-    first try the lookup in ref.  Failover from ref will lookup variables
-    defined in the user\'s environment variables.  Use sep to override the
-    path separator (os.sep).
+    Extract shell variables of form ``$var`` and ``${var}``. Unknown variables
+    will raise an exception. If a reference dictionary (*ref*) is provided,
+    first try the lookup in *ref*.  Failover from *ref* will lookup variables
+    defined in the user\'s environment variables.  Use *sep* to override the
+    path separator (``os.sep``).
 
-    For example:
+    Args:
+        path (str): a path string with shell variables.
+        ref (dict(str), default=None): a dict of lookup variables.
+        sep (str, default=None): the path separator string.
+
+    Returns:
+        dict of shell variables found in the given path string.
+
+    Examples:
         >>> getvars(\'$HOME/stuff\')
         {\'HOME\': \'/Users/foo\'}
     '''
@@ -103,8 +125,19 @@ def getvars(path,ref=None,sep=None):
     return ndict
 
 def convert(files,platform=None,pathsep=None,verbose=True):
-    '''convert(files[,platform,pathsep,verbose]);
-    Convert text files to given platform type (os.linesep is not good enough)'''
+    '''convert text files to given platform type
+
+    Ensure given files use the appropriate ``os.linesep`` and other formatting.
+
+    Args:
+        files (list(str)): a list of filenames.
+        platform (str, default=None): platform name as in ``os.name``.
+        pathsep (str, default=None): the path separator string.
+        verbose (bool, default=True): if True, print debug statements..
+
+    Returns:
+        0 if converted, otherwise return 1.
+    '''
     if not platform: platform = os.name
     if not pathsep: pathsep = os.pathsep
     MAC = '\r'
@@ -139,14 +172,20 @@ def convert(files,platform=None,pathsep=None,verbose=True):
     return allconverted
 
 def replace(file,sub={},outfile=None):
-    '''replace(file,[sub,outfile]); Replace text {old:new} in the given file
+    '''make text substitutions given by *sub* in the given file
 
-    file: path to original file
-    sub: dictionary of strings to replace, with entries of {old:new}
-    outfile: if an outfile is given, don't overwrite the original file
+    Args:
+        file (str): path to original file.
+        sub (dict(str), default={}: dict of string replacements ``{old:new}``.
+        outfile (str, default=None): if given, don't overwrite original file.
 
-    replace uses regular expressions, thus a pattern may be given as old text.
-    Note this function can fail if order of substitution is important.'''
+    Returns:
+        None
+
+    Note:
+        ``replace`` uses regular expressions, thus a pattern may be used as
+        *old* text. ``replace`` can fail if order of substitution is important.
+    '''
     #XXX: use OrderedDict instead... would enable ordered substitutions
     if outfile == None: outfile = file
     input = open(file, 'r')
@@ -161,15 +200,23 @@ def replace(file,sub={},outfile=None):
     return
 
 def index_slice(sequence,start,stop,step=1,sequential=False,inclusive=False):
-    '''index_slice(sequence,start,stop[,step,sequential,inclusive]);
-    Get the slice for a sequence, where the slice indicies are determined
-    by the positions of \'start\' and \'stop\' within the sequence.
+    '''get the slice for a given sequence
 
-    If start is not found in the sequence, slice from the beginning. If stop
-    is not found in the sequence, slice to the end. If inclusive=False,
-    slicing will be performed with standard conventions (i.e. include start,
-    but not stop); if inclusive=True, stop will be included. If sequential,
-    then stop will not be searched for before start.'''
+    Slice indicies are determined by the positions of *start* and *stop*.
+    If *start* is not found in the sequence, slice from the beginning. If
+    *stop* is not found in the sequence, slice to the end.
+
+    Args:
+        sequence (list): an ordered sequence of elements.
+        start (int): index for start of the slice.
+        stop (int): index for stop position in the sequence.
+        step (int, default=1): indices until next member of the slice.
+        sequential (bool, default=False): if True, *start* must preceed *stop*.
+        inclusive (bool, default=False): if True, include *stop* in the slice.
+
+    Returns:
+        slice corresponding to given *start*, *stop*, and *step*.
+    '''
     if start in sequence:
         begin = sequence.index(start)
     else: begin = None
@@ -183,30 +230,45 @@ def index_slice(sequence,start,stop,step=1,sequential=False,inclusive=False):
     return slice(begin,end,step)
 
 def index_join(sequence,start,stop,step=1,sequential=True,inclusive=True):
-    '''index_join(sequence,start,stop[,step,sequential,inclusive]);
-    Slices a list of strings, then joins the remaining strings.
+    '''slice a list of strings, then join the remaining strings
 
-    If start is not found in the sequence, slice from the beginning. If stop
-    is not found in the sequence, slice to the end. If inclusive=False,
-    slicing will be performed with standard conventions (i.e. include start,
-    but not stop); if inclusive=True, stop will be included. If sequential,
-    then stop will not be searched for before start.'''
+    If *start* is not found in the sequence, slice from the beginning. If
+    *stop* is not found in the sequence, slice to the end.
+
+    Args:
+        sequence (list): an ordered sequence of elements.
+        start (int): index for start of the slice.
+        stop (int): index for stop position in the sequence.
+        step (int, default=1): indices until next member of the slice.
+        sequential (bool, default=True): if True, *start* must preceed *stop*.
+        inclusive (bool, default=True): if True, include *stop* in the slice.
+
+    Returns:
+        string produced by slicing the given sequence and joining the elements.
+    '''
     islice = index_slice(sequence,start,stop,step,sequential,inclusive)
     return ''.join(sequence[islice])
 
 #NOTE: broke backward compatibility January 17, 2014
 #      firstval=False --> all=False
 def findpackage(package,root=None,all=False,verbose=True,recurse=True):
-    '''findpackage(package[,root,all,verbose]); Get path(s) for a package
+    '''retrieve the path(s) for a package
 
-    root: path string of top-level directory to search
-    all: if True, return list of paths where package is found
-    verbose: print messages about the search
-    recurse: if True, recurse down from root directory
+    Args:
+        package (str): name of the package to search for.
+        root (str, default=None): path string of top-level directory to search.
+        all (bool, defualt=False): if True, return everywhere package is found.
+        verbose (bool, default=True): if True, print messages about the search.
+        recurse (bool, default=True): if True, recurse down the root directory.
 
-    On some OS, recursion can be specified by recursion depth (an integer).
-    findpackage will do standard pattern matching for names of packages,
-    attempting to match the head directory of the distribution'''
+    Returns:
+        string path (or list of paths) where package is found.
+
+    Note:
+        On some OS, recursion can be specified by recursion depth (an integer).
+        ``findpackage`` will do standard pattern matching for package names,
+        attempting to match the head directory of the distribution.
+    '''
     if not root: root = os.curdir
     if verbose: print('searching %s...' % root)
     if package[0] != os.sep: package = os.sep+package
@@ -236,22 +298,29 @@ def findpackage(package,root=None,all=False,verbose=True,recurse=True):
 #NOTE: broke backward compatibility January 18, 2014
 #      minimum=True --> minimum=False
 def select(iterable,counter='',minimum=False,reverse=False,all=True):
-    '''select(iterable[,counter,minimum,reverse,all]); Find items in iterable
-    with the minimum/maximum count of the given counter.
+    '''find items in iterable with the max (or min) count of the given counter.
 
-    iterable: an iterable of iterables (e.g. a list of lists, list of strings)
-    counter: the item to count (e.g. counter=\'3\' counts occurances of \'3\')
-    minimum: if True, find items with minimum count; if False, find maximum
-    reverse: if True, reverse order of the results; if False, maintain order
-    all: if False, only return the first result
+    Find the items in an iterable that have the maximum number of *counter*
+    (e.g. counter=\'3\' counts occurances of \'3\'). Use ``minimum=True`` to
+    search for the minimum number of occurances of the *counter*.
 
-    For example:
+    Args:
+        iterable (list): an iterable of iterables (e.g. lists, strings, etc).
+        counter (str, default=''): the item to count.
+        minimum (bool, default=False): if True, find min count (else, max).
+        reverse (bool, default=False): if True, reverse order of the results.
+        all (bool, default=True): if False, only return the first result.
+
+    Returns:
+        list of items in the iterable with the min (or max) count.
+
+    Examples:
         >>> z = [\'zero\',\'one\',\'two\',\'three\',\'4\',\'five\',\'six\',\'seven\',\'8\',\'9/81\']
         >>> select(z, counter=\'e\')
         [\'three\', \'seven\']
         >>> select(z, counter=\'e\', minimum=True)
         [\'two\', \'4\', \'six\', \'8\', \'9/81\']
-        >>>
+
         >>> y = [[1,2,3],[4,5,6],[1,3,5]]
         >>> select(y, counter=3)
         [[1, 2, 3], [1, 3, 5]]
@@ -291,22 +360,29 @@ def select(iterable,counter='',minimum=False,reverse=False,all=True):
 #NOTE: broke backward compatibility January 18, 2014
 #      minimum=True --> minimum=False
 def selectdict(dict,counter='',minimum=False,all=True):
-    '''selectdict(dict[,counter,minimum,all]); Return a dict of items with
-    the minimum/maximum count of the given counter.
+    '''return a dict of items with the max (or min) count of the given counter.
 
-    dict: dict with iterables as values (e.g. values are strings or lists)
-    counter: the item to count (e.g. counter=\'3\' counts occurances of \'3\')
-    minimum: if True, find items with minimum count; if False, find maximum
-    all: if False, return a dict with only one item
+    Get the items from a dict that have the maximum number of the *counter*
+    (e.g. counter=\'3\' counts occurances of \'3\') in the values. Use
+    ``minimum=True`` to search for minimum number of occurances of *counter*.
 
-    For example:
+    Args:
+        dict (dict): dict with iterables as values (e.g. lists, strings, etc).
+        counter (str, default=''): the item to count.
+        minimum (bool, default=False): if True, find min count (else, max).
+        all (bool, default=True): if False, only return the first result.
+
+    Returns:
+        dict of items composed of the entries with the min (or max) count.
+
+    Examples:
         >>> z = [\'zero\',\'one\',\'two\',\'three\',\'4\',\'five\',\'six\',\'seven\',\'8\',\'9/81\']
         >>> z = dict(enumerate(z))
         >>> selectdict(z, counter=\'e\')
         {3: \'three\', 7: \'seven\'}
         >>> selectdict(z, counter=\'e\', minimum=True)
         {8: \'8\', 9: \'9/81\', 2: \'two\', 4: \'4\', 6: \'six\'}
-        >>>
+
         >>> y = {1: [1,2,3], 2: [4,5,6], 3: [1,3,5]}
         >>> selectdict(y, counter=3)
         {1: [1, 2, 3], 3: [1, 3, 5]}
@@ -327,13 +403,20 @@ def selectdict(dict,counter='',minimum=False,all=True):
 #NOTE: broke backward compatibility January 18, 2014
 #      forceSSH --> loopback
 def remote(path,host=None,user=None,loopback=False):
-    """remote(path[,host,user,loopback]); Build string for remote connection
-    of the form [[user@]host:]path.
+    '''build string for a remote connection of the form ``[[user@]host:]path``
 
-    path: path string for location of target on (remote) filesystem
-    host: string name/ip address of (remote) host
-    user: user name on (remote) host
-    loopback: if True, and host=None, then use host=localhost"""
+    Args:
+        path (str): path string for location of target on (remote) filesystem.
+        host (str, default=None): string name/ip address of (remote) host.
+        user (str, default=None): user name on (remote) host.
+        loopback (bool, default=False): if True, ensure *host* is used.
+
+    Returns:
+        a remote connection string.
+
+    Note:
+        if loopback=True and host=None, then host will be set to localhost.
+    '''
     if loopback and not host: host = 'localhost'
     if host:
         path = '%s:%s' % (host,path)
@@ -345,12 +428,19 @@ def remote(path,host=None,user=None,loopback=False):
 #      forceSSH  --> loopback
 #      useOption --> login_flag          
 def parse_remote(path,loopback=False,login_flag=False):
-    """parse_remote(path[,loopback,login_flag]); Parse remote connection string
-    of the form [[user@]host:]path to a tuple of (user, host, path).
+    """parse remote connection string of the form ``[[user@]host:]path``
 
-    path: remote connection string
-    loopback: if True, and no host is found, then return host=localhost
-    login_flag: if True, prepend user name with \'-l\'"""
+    Args:
+        path (str): remote connection string.
+        loopback (bool, default=False): if True, ensure *host* is used.
+        login_flag (bool, default=False): if True, prepend user with ``-l``.
+
+    Returns:
+        a tuple of the form ``(user, host, path)``.
+
+    Note:
+        if loopback=True and host=None, then host will be set to localhost.
+    """
     dpath = path.split(':')[-1]
     rhost = path.split(':')[0]
     if rhost == dpath:
@@ -364,15 +454,29 @@ def parse_remote(path,loopback=False,login_flag=False):
 
 
 def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
-    """which_python([version,lazy,fullpath,ignore_errors]);
-    get the command to launch the selected version of python
+    """get the command to launch the selected version of python
 
-    version: int (float) of major (minor) version number; if True, get default
-    lazy: if True, build a lazy-evaluating command (e.g. `which python`)
-    fullpath: if True, return the fullpath instead of relying on a $PATH lookup
-    ignore_errors: if True, ignore errors (e.g. not finding version=3.0)
+    ``which_python`` composes a command string that can be used to launch
+    the desired python executable. The user\'s path is searched for the
+    executable, unless ``lazy=True`` and thus only a lazy-evaluating command
+    (e.g. \'which python\') is produced.
 
-    which_python searches the user\'s path for python executables
+    Args:
+        version (bool, default=False): if True, include the version of python.
+        lazy (bool, default=False): if True, build a lazy-evaluating command.
+        fullpath (bool, default=True): if True, provide the full path.
+        ignore_errors (bool, default=True): if True, ignore path search errors.
+
+    Returns:
+        string of the implicit or explicit location of the python executable.
+
+    Note:
+        if version is given as an int or float, include the version number
+        in the command string.
+
+    Note:
+        if the executable is not found, an error will be thrown unless
+        ``ignore_error=True``.
     """
     target = "python"; tail = ""
     import sys
@@ -399,16 +503,26 @@ def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
     return target
 
 def wait_for(path,sleep=1,tries=150,ignore_errors=False):
-    """wait_for(path[,sleep,tries,ignore_errors]);
-    block execution by waiting for a file to appear at the given path
+    """block execution by waiting for a file to appear at the given path
         
-    sleep: the time between checking results
-    tries: the number of times to try
-    ignore_errors: if True, ignore timeout error (number of tries exceeded)
+    Args:
+        path (str): the path string to watch for the file.
+        sleep (float, default=1): the time between checking results.
+        tries (int, default=150): the number of times to try.
+        ignore_errors (bool, default=False): if True, ignore timeout error.
 
-    Note, using subproc = Popen(...) and subproc.wait() is usually a better
-    approach. However, when a handle to the subprocess is unavailable, waiting
-    for a file to appear at a given path is a decent last resort.
+    Returns:
+        None
+
+    Note:
+        if the file is not found after the given number of tries, an error
+        will be thrown unless ``ignore_error=True``.
+
+    Note:
+        using ``subproc = Popen(...)`` and ``subproc.wait()`` is usually
+        a better approach. However, when a handle to the subprocess is
+        unavailable, waiting for a file to appear at a given path is a
+        decent last resort.
     """
     from subprocess import call
     maxcount = int(tries); counter = 0

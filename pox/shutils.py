@@ -25,13 +25,27 @@ else:
     MODE = eval('0o775')
 
 def shelltype():
-    '''shelltype(); Get the name (e.g. \'bash\') of the current command shell'''
+    '''get the name (e.g. \'bash\') of the current command shell
+
+    Args:
+        None
+
+    Returns:
+        string name of the shell, or None if name can not be determined.
+    '''
     shell = env('SHELL',all=False) or env('SESSIONNAME',all=False)
     if shell in ('Console',): shell = 'cmd' # or not?
     return os.path.basename(shell) if shell else None
 
 def homedir():
-    '''homedir(); Get the full path of the user\'s home directory'''
+    '''get the full path of the user\'s home directory
+
+    Args:
+        None
+
+    Returns:
+        string path of the directory, or None if home can not be determined.
+    '''
     try:
         homedir = env('USERPROFILE',all=False) or os.path.expandvars('$HOME')
         if '$' in homedir: raise ValueError
@@ -45,11 +59,25 @@ def homedir():
         return homedir
 
 def rootdir():
-    '''rootdir(); Get the path corresponding to the root of the current drive'''
+    '''get the path corresponding to the root of the current drive
+
+    Args:
+        None
+
+    Returns:
+        string path of the directory.
+    '''
     return os.path.splitdrive(os.getcwd())[0]+os.sep
 
 def username():
-    '''username(); Get the login name of the current user'''
+    '''get the login name of the current user
+
+    Args:
+        None
+
+    Returns:
+        string name of the user.
+    '''
     try:
         return os.getlogin()
     except:
@@ -58,7 +86,14 @@ def username():
         return uname
 
 def sep(type=''):
-    '''sep([type]); Get the seperator, type is one of {sep,line,path,ext,alt}'''
+    '''get the separator string for the given type of separator
+
+    Args:
+        type (str, default=''): one of ``{sep,line,path,ext,alt}``.
+
+    Returns:
+        separator string.
+    '''
     if type in ['path','pathsep']: return os.pathsep
     elif type in ['ext','extsep']: return os.extsep
     elif type in ['line','linesep']: return os.linesep
@@ -71,12 +106,16 @@ def sep(type=''):
     
 
 def minpath(path,pathsep=None):
-    '''minpath(path[,pathsep]); remove duplicate paths from given set of paths
+    '''remove duplicate paths from given set of paths
 
-    path: path string (e.g. \'/Users/foo/bin:/bin:/sbin:/usr/bin\')
-    pathsep: path separator (e.g. \':\'); if none provided, use OS default
+    Args:
+        path (str): path string (e.g. \'/Users/foo/bin:/bin:/sbin:/usr/bin\').
+        pathsep (str, default=None): path separator (e.g. \':\').
 
-    For example:
+    Returns:
+        string composed of one or more paths, with duplicates removed.
+
+    Examples:
         >>> minpath(\'.:/Users/foo/bin:.:/Users/foo/bar/bin:/Users/foo/bin\')
         \'.:/Users/foo/bin:/Users/foo/bar/bin\'
     '''
@@ -92,13 +131,20 @@ def minpath(path,pathsep=None):
 #      firstval=False --> all=True
 #      pathDups=True  --> minimal=False
 def env(variable,all=True,minimal=False):
-    '''env(variable[,all,minimal]); get dict of environment {variable:value}
+    '''get dict of environment variables of the form ``{variable:value}``
 
-    variable: name or partial name string for environment variable
-    all: if False, only return the first match [NOTE: use at own risk!!!]
-    minimal: if True, remove all duplicate paths from the returned path string
+    Args:
+        variable (str): name or partial name for environment variable.
+        all (bool, default=True): if False, only return the first match.
+        minimal (bool, default=False): if True, remove all duplicate paths.
 
-    For example:
+    Returns:
+        dict of strings of environment variables.
+
+    Warning:
+        selecting all=False can lead to unexpected matches of *variable*.
+
+    Examples:
         >>> env(\'*PATH\')
         {\'PYTHONPATH\': \'.\', \'PATH\': \'.:/usr/bin:/bin:/usr/sbin:/sbin\'}
     '''
@@ -120,12 +166,16 @@ def env(variable,all=True,minimal=False):
 #NOTE: broke backward compatibility January 17, 2014
 #      listall --> all
 def whereis(prog,all=False): #Unix specific (Windows punts to which)
-    '''whereis(prog[,all]); Get path to the given program
+    '''get path to the given program
 
-    prog: name of an executable to search for (e.g. python)
-    all: if True, return list of paths where executable is found
+    search the standard binary install locations for the given executable.
 
-    whereis searches standard binary install locations for the given executable
+    Args:
+        prog (str): name of an executable to search for (e.g. ``python``).
+        all (bool, default=True): if True, return a list of paths found.
+
+    Returns:
+        string path of the executable, or list of path strings.
     '''
     if sys.platform[:3] == 'win': return which(prog,all=all)
     whcom = 'whereis '
@@ -148,14 +198,18 @@ def whereis(prog,all=False): #Unix specific (Windows punts to which)
 #      allowerror=False --> ignore_errors=True
 #      listall=False    --> all=False
 def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
-    '''which(prog[,allow_links,ignore_errors,all]); Get path of given program
+    '''get the path of the given program
 
-    prog: name of an executable to search for (e.g. python)
-    allow_links: if False, convert all links to the real paths
-    ignore_errors: if True, ignore errors (e.g. not finding \'prog'\)
-    all: if True, return list of paths where executable is found
+    search the user\'s paths for the given executable.
 
-    which searches the user\'s paths for the given executable
+    Args:
+        prog (str): name of an executable to search for (e.g. ``python``).
+        allow_links (bool, default=True): if False, replace link with fullpath.
+        ignore_errors (bool, default=True): if True, ignore search errors.
+        all (bool, default=False): if True, get list of paths for executable.
+
+    Returns:
+        if all=True, get a list of string paths, else return a string path. 
     '''
     if sys.platform[:3] == 'win':
         # try to deal with windows laziness about extensions
@@ -189,19 +243,25 @@ def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
     return paths
     
 def find(patterns,root=None,recurse=True,type=None,verbose=False):
-    '''find(patterns[,root,recurse,type]); Get path to a file or directory
+    '''get the path to a file or directory
 
-    patterns: name or partial name string of items to search for
-    root: path string of top-level directory to search
-    recurse: if True, recurse down from root directory
-    type: item filter; one of {None, file, dir, link, socket, block, char}
-    verbose: if True, be a little verbose about the search
+    Args:
+        patterns (str): name or partial name of items to search for.
+        root (str, default=None): path of top-level directory to search.
+        recurse (bool, default=True): if True, recurse downward from *root*.
+        type (str, default=None): a search filter.
+        verbose (bool, default=False): if True, be verbose about the search.
 
-    On some OS, recursion can be specified by recursion depth (an integer).
-    patterns can be specified with basic pattern matching. Additionally,
-    multiple patterns can be specified by splitting patterns with a \';'\
+    Returns:
+        a list of string paths.
 
-    For example:
+    Note:
+        on some OS, *recursion* can be specified by recursion depth (*int*),
+        and *patterns* can be specified with basic pattern matching. Also,
+        multiple patterns can be specified by splitting patterns with a \';\'.
+        The *type* can be one of ``{file, dir, link, socket, block, char}``.
+
+    Examples:
         >>> find(\'pox*\', root=\'..\')
         [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher.py\']
 
@@ -257,21 +317,24 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
 
 # TODO: enable recursion depth
 def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):
-    '''walk(root[,patterns,recurse,folders,files,links]); walk directory tree
+    '''walk directory tree and return a list matching the requested pattern
 
-    Walk the directory tree and return list matching the requested pattern
+    Args:
+        root (str): path of top-level directory to search.
+        patterns (str, default=\'\*\'): (partial) name of items to search for.
+        recurse (bool, default=True): if True, recurse downward from *root*.
+        folders (bool, default=False): if True, include folders in the results.
+        files (bool, default=True): if True, include files in results.
+        links (bool, default=True): if True, include links in results.
 
-    root: path string of top-level directory to search
-    patterns: name or partial name string of items to search for
-    recurse: if True, recurse down from root directory
-    folders: if True, include folders in results of the walk
-    files: if True, include files in results of the walk
-    links: if True, include links in results of the walk
+    Returns:
+        a list of string paths.
 
-    patterns can be specified with basic pattern matching. Additionally,
-    multiple patterns can be specified by splitting patterns with a \';'\
+    Note:
+        patterns can be specified with basic pattern matching. Additionally,
+        multiple patterns can be specified by splitting patterns with a \';\'.
 
-    For example:
+    Examples:
         >>> walk(\'..\', patterns=\'pox*\')
         [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher.py\']
 
@@ -339,12 +402,18 @@ def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):
     return arg.results
 
 def where(name,path,pathsep=None):
-    '''where(name,path[,pathsep]); Get the full path for the given name string
-    on the given search path.
+    '''get the full path for the given name string on the given search path.
 
-    name: string name of file, folder, etc to find
-    path: path string (e.g. \'/Users/foo/bin:/bin:/sbin:/usr/bin\')
-    pathsep: path separator (e.g. \':\'); if none provided, use OS default
+    Args:
+        name (str): name of file, folder, etc to find.
+        path (str): path string (e.g. \'/Users/foo/bin:/bin:/sbin:/usr/bin\').
+        pathsep (str, default=None): path separator (e.g. \':\')
+
+    Returns:
+        the full path string.
+
+    Note:
+        if pathsep is not provided, the OS default will be used.
     '''
     if not pathsep: pathsep = os.pathsep
     for _path in path.split(pathsep):
@@ -354,14 +423,19 @@ def where(name,path,pathsep=None):
     return None
 
 def mkdir(path,root=None,mode=None):
-    '''mkdir(path[,root,mode]); make a new directory in the root directory
+    '''create a new directory in the root directory
 
-    path: string name of new directory
-    root: path string of directory in which to build the new directory
-    mode: octal representing read/write permissions [default is 0o775]
+    create a directory at *path* and any necessary parents (i.e. \'mkdir -p\').
+    Default mode is read/write/execute for \'user\' and \'group\', and then
+    read/execute otherwise.
 
-    mkdir will create any necessary parents (like unix \'mkdir -p\').  Default
-    mode is read/write/execute for \'user\', \'group\'; read/execute otherwise)
+    Args:
+        path (str): string name of the new directory.
+        root (str, default=None): path at which to build the new directory.
+        mode (str, default=None): octal read/write permission [default: 0o775].
+
+    Returns:
+        string absolute path for new directory.
     '''
     if mode is None: mode = MODE
     if not root: root = os.curdir
@@ -377,13 +451,20 @@ def mkdir(path,root=None,mode=None):
             raise
 
 def shellsub(command):
-    '''shellsub(command); Parse command formatted for remote shell invocation
+    '''parse the given command to be formatted for remote shell invocation
 
-    Secure shell (ssh) can be used to send and execute commands to remote
-    machines (using ssh <hostname> <command>).  Additional escape characters
+    secure shell (``ssh``) can be used to send and execute commands to remote
+    machines (using ``ssh <hostname> <command>``). Additional escape characters
     are needed to enable the command to be correctly formed and executed
-    remotely.  shellsub attemps to parse the given command string correctly
-    so that it can be executed remotely with ssh.'''
+    remotely. *shellsub* attemps to parse the given command string correctly
+    so that it can be executed remotely with ssh.
+
+    Args:
+        command (str): the command to be executed remotely.
+
+    Returns:
+        the parsed command string.
+    '''
     import re
     command = re.compile('\'').sub('\\\'',command) 
     command = re.compile('\"').sub('\\\"',command)

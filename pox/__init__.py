@@ -33,12 +33,12 @@ from .utils import pattern, expandvars, getvars, convert, replace, wait_for, \
 
 
 def license():
-    """print license"""
+    """print the license"""
     print(__license__)
     return
 
 def citation():
-    """print citation"""
+    """print the citation"""
     print(__doc__[-501:-123])
     return
 
