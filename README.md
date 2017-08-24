@@ -79,12 +79,8 @@ also be run directly from an operating system terminal, using the
 documented, so further questions may be resolved by inspecting the code
 itself.  Please also feel free to submit a ticket on github, or ask a
 question on stackoverflow (**@Mike McKerns**).
-
-``pox`` is an active research tool. There are a growing number of publications
-and presentations that discuss real-world examples and new features of ``pox``
-in greater detail than presented in the user's guide.  If you would like to
-share how you use ``pox`` in your work, please message me or send an email
-(to **mmckerns at uqfoundation dot org**).
+If you would like to share how you use ``pox`` in your work, please send an
+email (to **mmckerns at uqfoundation dot org**).
 
 
 Citation
