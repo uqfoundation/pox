@@ -54,7 +54,7 @@ def expandvars(string,ref=None,secondref={}):
     Examples:
         >>> expandvars(\'found:: $PYTHONPATH\')
         \'found:: .:/Users/foo/lib/python3.4/site-packages\'
-
+        >>> 
         >>> expandvars(\'found:: $PYTHONPATH\', ref={})
         \'found:: $PYTHONPATH\'
     """
@@ -182,7 +182,7 @@ def replace(file,sub={},outfile=None):
     Returns:
         None
 
-    Note:
+    Notes:
         ``replace`` uses regular expressions, thus a pattern may be used as
         *old* text. ``replace`` can fail if order of substitution is important.
     '''
@@ -264,7 +264,7 @@ def findpackage(package,root=None,all=False,verbose=True,recurse=True):
     Returns:
         string path (or list of paths) where package is found.
 
-    Note:
+    Notes:
         On some OS, recursion can be specified by recursion depth (an integer).
         ``findpackage`` will do standard pattern matching for package names,
         attempting to match the head directory of the distribution.
@@ -320,7 +320,7 @@ def select(iterable,counter='',minimum=False,reverse=False,all=True):
         [\'three\', \'seven\']
         >>> select(z, counter=\'e\', minimum=True)
         [\'two\', \'4\', \'six\', \'8\', \'9/81\']
-
+        >>> 
         >>> y = [[1,2,3],[4,5,6],[1,3,5]]
         >>> select(y, counter=3)
         [[1, 2, 3], [1, 3, 5]]
@@ -382,7 +382,7 @@ def selectdict(dict,counter='',minimum=False,all=True):
         {3: \'three\', 7: \'seven\'}
         >>> selectdict(z, counter=\'e\', minimum=True)
         {8: \'8\', 9: \'9/81\', 2: \'two\', 4: \'4\', 6: \'six\'}
-
+        >>> 
         >>> y = {1: [1,2,3], 2: [4,5,6], 3: [1,3,5]}
         >>> selectdict(y, counter=3)
         {1: [1, 2, 3], 3: [1, 3, 5]}
@@ -414,7 +414,7 @@ def remote(path,host=None,user=None,loopback=False):
     Returns:
         a remote connection string.
 
-    Note:
+    Notes:
         if loopback=True and host=None, then host will be set to localhost.
     '''
     if loopback and not host: host = 'localhost'
@@ -438,7 +438,7 @@ def parse_remote(path,loopback=False,login_flag=False):
     Returns:
         a tuple of the form ``(user, host, path)``.
 
-    Note:
+    Notes:
         if loopback=True and host=None, then host will be set to localhost.
     """
     dpath = path.split(':')[-1]
@@ -470,11 +470,10 @@ def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
     Returns:
         string of the implicit or explicit location of the python executable.
 
-    Note:
+    Notes:
         if version is given as an int or float, include the version number
         in the command string.
 
-    Note:
         if the executable is not found, an error will be thrown unless
         ``ignore_error=True``.
     """
@@ -514,11 +513,10 @@ def wait_for(path,sleep=1,tries=150,ignore_errors=False):
     Returns:
         None
 
-    Note:
+    Notes:
         if the file is not found after the given number of tries, an error
         will be thrown unless ``ignore_error=True``.
 
-    Note:
         using ``subproc = Popen(...)`` and ``subproc.wait()`` is usually
         a better approach. However, when a handle to the subprocess is
         unavailable, waiting for a file to appear at a given path is a

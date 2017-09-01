@@ -255,7 +255,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
     Returns:
         a list of string paths.
 
-    Note:
+    Notes:
         on some OS, *recursion* can be specified by recursion depth (*int*),
         and *patterns* can be specified with basic pattern matching. Also,
         multiple patterns can be specified by splitting patterns with a \';\'.
@@ -264,7 +264,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
     Examples:
         >>> find(\'pox*\', root=\'..\')
         [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher.py\']
-
+        >>> 
         >>> find(\'*shutils*;*init*\')
         [\'/Users/foo/pox/pox/shutils.py\', \'/Users/foo/pox/pox/__init__.py\']
     '''
@@ -330,14 +330,14 @@ def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):
     Returns:
         a list of string paths.
 
-    Note:
+    Notes:
         patterns can be specified with basic pattern matching. Additionally,
         multiple patterns can be specified by splitting patterns with a \';\'.
 
     Examples:
         >>> walk(\'..\', patterns=\'pox*\')
         [\'/Users/foo/pox/pox\', \'/Users/foo/pox/scripts/pox_launcher.py\']
-
+        >>> 
         >>> walk(\'.\', patterns=\'*shutils*;*init*\')
         [\'/Users/foo/pox/pox/shutils.py\', \'/Users/foo/pox/pox/__init__.py\']
     '''
@@ -412,7 +412,7 @@ def where(name,path,pathsep=None):
     Returns:
         the full path string.
 
-    Note:
+    Notes:
         if pathsep is not provided, the OS default will be used.
     '''
     if not pathsep: pathsep = os.pathsep

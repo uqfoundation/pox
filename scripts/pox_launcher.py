@@ -8,10 +8,9 @@
 """
 run any of the pox commands from the command shell prompt
 
-Note:
+Notes:
     to get help, type ``$ pox_launcher.py`` at a shell terminal prompt.
 
-Note:
     incorrect function invocation will print the function's doc string.
 
 Examples::

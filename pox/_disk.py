@@ -56,7 +56,7 @@ def kbytes(text):
     Examples:
         >>> kbytes(\'10K\')
         10
-
+        >>> 
         >>> kbytes(\'10G\')
         10485760
     """
@@ -88,11 +88,10 @@ def rmtree(path, self=True, ignore_errors=False, onerror=None):
     Returns:
         None
 
-    Note:
+    Notes:
         If self=False, the directory indicated by path is left in place,
         and its subdirectories are erased. If self=True, path is also removed.
 
-    Note:
         If ignore_errors=True, errors are ignored. Otherwise, onerror is called        to handle the error with arguments ``(func, path, exc_info)``, where
         *func* is ``os.listdir``, ``os.remove``, or ``os.rmdir``; *path* is the
         argument to the function that caused it to fail; and *exc_info* is a
