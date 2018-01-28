@@ -13,6 +13,8 @@ Notes:
 
     incorrect function invocation will print the function's doc string.
 
+    for a list of available functions, type ``$ pox_launcher.py "help('pox')"``.
+
 Examples::
 
     $ pox_launcher.py "which('python')"
@@ -24,6 +26,7 @@ from inspect import isfunction
 def help(function=None):
     #XXX: better would be to provide a list of available commands
     if function == 'pox':
+        print('Available functions:')
         print([key for (key,val) in globals().items() if isfunction(val) and not key.startswith('_')])
         return
     try:
@@ -36,6 +39,8 @@ def help(function=None):
     print("Please provide a 'pox' command enclosed in quotes.\n")
     print("For example:")
     print("  $ pox_launcher.py \"which('python')\"")
+    print("")
+    help('pox')
     return
 
 
