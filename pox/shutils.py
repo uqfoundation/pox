@@ -11,7 +11,6 @@
 shell utilities for user environment and filesystem exploration
 """
 
-from __future__ import absolute_import
 import os
 import sys
 from subprocess import Popen, PIPE, STDOUT

@@ -6,8 +6,6 @@
 # License: 3-clause BSD.  The full license text is available at:
 #  - https://github.com/uqfoundation/pox/blob/master/LICENSE
 
-from __future__ import absolute_import
-
 # get version numbers, license, and long description
 try:
     from .info import this_version as __version__

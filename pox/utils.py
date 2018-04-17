@@ -11,7 +11,6 @@
 higher-level shell utilities for user environment and filesystem exploration
 """
 
-from __future__ import absolute_import
 import os
 from . import shutils
 from ._disk import kbytes, disk_used
