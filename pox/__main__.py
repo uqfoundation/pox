@@ -9,15 +9,15 @@
 run any of the pox commands from the command shell prompt
 
 Notes:
-    to get help, type ``$ pox_launcher.py`` at a shell terminal prompt.
+    to get help, type ``$ pox`` at a shell terminal prompt.
 
     incorrect function invocation will print the function's doc string.
 
-    for a list of available functions, type ``$ pox_launcher.py "help('pox')"``.
+    for a list of available functions, type ``$ pox "help('pox')"``.
 
 Examples::
 
-    $ pox_launcher.py "which('python')"
+    $ pox "which('python')"
     /usr/bin/python
 """
 from pox import *
@@ -38,7 +38,7 @@ def help(function=None):
         pass
     print("Please provide a 'pox' command enclosed in quotes.\n")
     print("For example:")
-    print("  $ pox_launcher.py \"which('python')\"")
+    print("  $ pox \"which('python')\"")
     print("")
     help('pox')
     return

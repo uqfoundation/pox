@@ -111,5 +111,6 @@ def test_utils():
     assert len(selectdict(bogusdict,counter='/',all=False)) == 1
     return
 
+
 if __name__=='__main__':
     test_utils()

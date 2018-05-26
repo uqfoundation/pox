@@ -6,7 +6,6 @@
 # License: 3-clause BSD.  The full license text is available at:
 #  - https://github.com/uqfoundation/pox/blob/master/LICENSE
 
-from __future__ import with_statement
 import os
 
 # set version numbers
@@ -108,7 +107,7 @@ Major Features
 Current Release
 ===============
 
-This version is ``pox-%(relver)s``.
+This documentation is for version ``pox-%(thisver)s``.
 
 The latest released version of ``pox`` is available from:
 
@@ -137,8 +136,8 @@ Installation
 download the tarball, unzip, and run the installer::
 
     [download]
-    $ tar -xvzf pox-%(thisver)s.tar.gz
-    $ cd pox-%(thisver)s
+    $ tar -xvzf pox-%(relver)s.tar.gz
+    $ cd pox-%(relver)s
     $ python setup py build
     $ python setup py install
 
@@ -165,13 +164,14 @@ Optional requirements:
 More Information
 ================
 
-Probably the best way to get started is to look at the tests that are
-provided within ``pox``. See ``pox.tests`` for a set of scripts that demonstrate
-how ``pox`` can be used to interact with the operating system. ``pox`` utilities
-can also be run directly from an operating system terminal, using the
-``pox_launcher.py`` script.  The source code is also generally well
+Probably the best way to get started is to look at the documentation at
+http://pox.rtfd.io. Also see ``pox.tests`` for a set of scripts that demonstrate
+how ``pox`` can be used to interact with the operating system. You can run the
+test suite with ``python -m pox.tests``.  All ``pox`` utilities
+can be launched directly from an operating system terminal, using the ``pox``
+script (or with ``python -m pox``).  The source code is also generally well
 documented, so further questions may be resolved by inspecting the code
-itself.  Please also feel free to submit a ticket on github, or ask a
+itself.  Please feel free to submit a ticket on github, or ask a
 question on stackoverflow (**@Mike McKerns**).
 If you would like to share how you use ``pox`` in your work, please send an
 email (to **mmckerns at uqfoundation dot org**).
@@ -240,8 +240,8 @@ setup(name='pox',
                      'Topic :: Scientific/Engineering',
                      'Topic :: Software Development'),
 
-      packages = ['pox'],
-      package_dir = {'pox':'pox'},
+      packages = ['pox','pox.tests'],
+      package_dir = {'pox':'pox','pox.tests':'tests'},
 """ % (target_version, long_description, stable_version, stable_version)
 
 '''
@@ -255,8 +255,8 @@ if has_setuptools:
 
 # close 'setup' call
 setup_code += """    
-      zip_safe=True,
-      scripts=['scripts/pox_launcher.py'])
+      zip_safe=False,
+      scripts=['scripts/pox'])
 """
 
 # exec the 'setup' code

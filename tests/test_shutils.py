@@ -88,7 +88,7 @@ def test_shutils():
    #print(find('python','/usr/local',type='l'))
    #print(find('*py;*txt'))
     x = 'tests' if find('setup.py', recurse=False) else '.'
-    assert set(find('__init__*;test_*',x,False,'f')) == set(find('*py;*pyc',x,recurse=False))
+    assert set(find('__init__*;__main__*;test_*',x,False,'f')) == set(find('*py;*pyc',x,recurse=False))
 
    #print('testing shellsub...')
     command = '${HOME}/bin/which foo("bar")'

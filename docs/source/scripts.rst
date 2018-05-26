@@ -1,9 +1,9 @@
 pox scripts documentation
 =========================
 
-pox_launcher script
+pox script
 -------------------
 
-.. automodule:: pox_launcher
+.. automodule:: _pox
     :members:
 

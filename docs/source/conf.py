@@ -19,7 +19,12 @@
 import os
 from datetime import datetime
 import sys
-sys.path.insert(0, os.path.abspath('../../scripts'))
+scripts = os.path.abspath('../../scripts')
+sys.path.insert(0, scripts)
+try:
+    os.symlink(scripts+os.sep+'pox', scripts+os.sep+'_pox.py')
+except:
+    pass
 
 # Import the project
 import pox
