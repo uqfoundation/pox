@@ -458,7 +458,7 @@ def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
     ``which_python`` composes a command string that can be used to launch
     the desired python executable. The user\'s path is searched for the
     executable, unless ``lazy=True`` and thus only a lazy-evaluating command
-    (e.g. \'which python\') is produced.
+    (e.g. ``which python``) is produced.
 
     Args:
         version (bool, default=False): if True, include the version of python.

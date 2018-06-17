@@ -24,7 +24,7 @@ else:
     MODE = eval('0o775')
 
 def shelltype():
-    '''get the name (e.g. \'bash\') of the current command shell
+    '''get the name (e.g. ``bash``) of the current command shell
 
     Args:
         None
@@ -109,7 +109,7 @@ def minpath(path,pathsep=None):
 
     Args:
         path (str): path string (e.g. \'/Users/foo/bin:/bin:/sbin:/usr/bin\').
-        pathsep (str, default=None): path separator (e.g. \':\').
+        pathsep (str, default=None): path separator (e.g. ``:``).
 
     Returns:
         string composed of one or more paths, with duplicates removed.
@@ -257,7 +257,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
     Notes:
         on some OS, *recursion* can be specified by recursion depth (*int*),
         and *patterns* can be specified with basic pattern matching. Also,
-        multiple patterns can be specified by splitting patterns with a \';\'.
+        multiple patterns can be specified by splitting patterns with a ``;``.
         The *type* can be one of ``{file, dir, link, socket, block, char}``.
 
     Examples:
@@ -331,7 +331,7 @@ def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):
 
     Notes:
         patterns can be specified with basic pattern matching. Additionally,
-        multiple patterns can be specified by splitting patterns with a \';\'.
+        multiple patterns can be specified by splitting patterns with a ``;``.
 
     Examples:
         >>> walk(\'..\', patterns=\'pox*\')
@@ -406,7 +406,7 @@ def where(name,path,pathsep=None):
     Args:
         name (str): name of file, folder, etc to find.
         path (str): path string (e.g. \'/Users/foo/bin:/bin:/sbin:/usr/bin\').
-        pathsep (str, default=None): path separator (e.g. \':\')
+        pathsep (str, default=None): path separator (e.g. ``:``)
 
     Returns:
         the full path string.
@@ -424,7 +424,7 @@ def where(name,path,pathsep=None):
 def mkdir(path,root=None,mode=None):
     '''create a new directory in the root directory
 
-    create a directory at *path* and any necessary parents (i.e. \'mkdir -p\').
+    create a directory at *path* and any necessary parents (i.e. ``mkdir -p``).
     Default mode is read/write/execute for \'user\' and \'group\', and then
     read/execute otherwise.
 
