@@ -9,11 +9,9 @@
 run any of the pox commands from the command shell prompt
 
 Notes:
-    to get help, type ``$ pox`` at a shell terminal prompt.
-
-    incorrect function invocation will print the function's doc string.
-
-    for a list of available functions, type ``$ pox "help('pox')"``.
+    - To get help, type ``$ pox`` at a shell terminal prompt.
+    - For a list of available functions, type ``$ pox "help('pox')"``.
+    - Incorrect function invocation will print the function's documentation.
 
 Examples::
 
