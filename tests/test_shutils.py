@@ -12,8 +12,9 @@ import os
 
 def test_shutils():
     '''script to test all shutils functions'''
-    from pox import shelltype, homedir, rootdir, sep, mkdir, walk, where, \
-                    username, minpath, env, which, find, shellsub, expandvars
+    from pox import shelltype, homedir, rootdir, sep, mkdir, walk, where, env, \
+                    username, minpath, which, which_python, find, shellsub, \
+                    expandvars, __version__ as version
 
    #print('testing shelltype...')
     shell = shelltype()
@@ -87,8 +88,15 @@ def test_shutils():
    #print('testing find...')
    #print(find('python','/usr/local',type='l'))
    #print(find('*py;*txt'))
-    x = 'tests' if find('setup.py', recurse=False) else '.'
-    assert set(find('__init__*;__main__*;test_*',x,False,'f')) == set(find('*py;*pyc',x,recurse=False))
+    x = os.path.dirname(__file__)
+    if not x: # this file is not found
+        x = which('pox;pox_launcher.py')
+        if x: # if executable found, then navigate to the test directory
+            p = which_python(fullpath=False, version=True)
+            x = os.sep.join((x.rsplit(os.sep, 2)[0],'lib',p))
+            x = [p for p in find('test_shutils.py',x,True,'f') if version in p]
+            x = x[0] if x else ''
+    if x: assert set(find('__init__*;__main__*;test_*',x,False,'f')) == set(find('*py;*pyc',x,recurse=False))
 
    #print('testing shellsub...')
     command = '${HOME}/bin/which foo("bar")'
