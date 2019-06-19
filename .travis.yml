@@ -67,3 +67,6 @@ install:
 
 script:
     - for test in tests/*.py; do echo $test ; python $test > /dev/null ; done
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
