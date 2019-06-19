@@ -34,7 +34,7 @@ matrix:
         - python: '3.7'
           dist: xenial
           sudo: true
-        - python: '3.8'
+        - python: '3.8-dev'
           dist: xenial
           sudo: true
         - python: 'nightly'
@@ -52,7 +52,7 @@ matrix:
         - python: '3.1'
         - python: '3.2'
         - python: '3.3'
-        - python: '3.8'
+        - python: '3.8-dev'
         - python: 'nightly'
     fast_finish: true
 
@@ -67,6 +67,3 @@ install:
 
 script:
     - for test in tests/*.py; do echo $test ; python $test > /dev/null ; done
-
-after_success:
-    - bash <(curl -s https://codecov.io/bash)
