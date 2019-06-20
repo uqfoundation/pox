@@ -96,7 +96,7 @@ install:
     - python setup.py build && python setup.py install
 
 script:
-    - if [ $COVERAGE == "true" ]; then coverage run tests/__main__.py > /dev/null; else python tests/__main__.py > /dev/null; fi
+    - for test in tests/*.py; do echo $test ; if [ $COVERAGE == "true" ]; then coverage run $test > /dev/null; else python $test > /dev/null; fi ; done
 
 after_success:
     - if [ $COVERAGE == "true" ]; then bash <(curl -s https://codecov.io/bash); else echo ''; fi
