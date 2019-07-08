@@ -57,7 +57,7 @@ def test_utils():
 
    #print('testing replace...')
     replace(source,{' is ':' was '})
-    replace(source,{'\sfile.\s':'.'})
+    replace(source,{'\\sfile.\\s':'.'})
     f = open(source,'r')
     assert f.read().rstrip() == 'this was a test.'
     f.close()
