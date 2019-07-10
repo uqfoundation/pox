@@ -465,7 +465,7 @@ def shellsub(command):
         the parsed command string.
     '''
     import re
-    command = re.compile('\'').sub('\\\'',command) 
+    command = re.compile("\'").sub("\\\'",command) 
     command = re.compile('\"').sub('\\\"',command)
     command = re.compile('\$').sub('\\\$',command)
     command = re.compile('\(').sub('\\\(',command)
