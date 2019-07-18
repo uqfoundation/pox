@@ -62,6 +62,7 @@ The latest released version of ``pox`` is available from:
 
 
 Development Version
+[![Documentation Status](https://readthedocs.org/projects/pox/badge/?version=latest)](https://pox.readthedocs.io/en/latest/?badge=latest)
 [![Travis Build Status](https://img.shields.io/travis/uqfoundation/pox.svg?label=build&logo=travis&branch=master)](https://travis-ci.org/uqfoundation/pox)
 [![codecov](https://codecov.io/gh/uqfoundation/pox/branch/master/graph/badge.svg)](https://codecov.io/gh/uqfoundation/pox)
 -------------------
