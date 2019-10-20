@@ -116,7 +116,7 @@ The latest released version of ``pox`` is available from:
 ``pox`` is distributed under a 3-clause BSD license.
 
     >>> import pox
-    >>> print (pox.license())
+    >>> pox.license()
 
 
 Development Version
@@ -154,7 +154,7 @@ Requirements
 
 ``pox`` requires:
 
-    - ``python``, **version >= 2.5** or **version >= 3.1**, or ``pypy``
+    - ``python``, **version >= 2.6** or **version >= 3.1**, or ``pypy``
 
 Optional requirements:
 
