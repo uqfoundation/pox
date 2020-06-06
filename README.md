@@ -32,9 +32,7 @@ a remote filesystem as if they were logged in locally.
 
 ``pox`` is part of ``pathos``, a python framework for heterogeneous computing.
 ``pox`` is in active development, so any user feedback, bug reports, comments,
-or suggestions are highly appreciated.  A list of known issues is maintained
-at http://trac.mystic.cacr.caltech.edu/project/pathos/query.html, with a public
-ticket list at https://github.com/uqfoundation/pox/issues.
+or suggestions are highly appreciated.  A list of issues is located at https://github.com/uqfoundation/pox/issues, with a legacy list maintained at https://uqfoundation.github.io/pathos-issues.html.
 
 
 Major Features
@@ -65,6 +63,7 @@ Development Version
 [![Documentation Status](https://readthedocs.org/projects/pox/badge/?version=latest)](https://pox.readthedocs.io/en/latest/?badge=latest)
 [![Travis Build Status](https://img.shields.io/travis/uqfoundation/pox.svg?label=build&logo=travis&branch=master)](https://travis-ci.org/uqfoundation/pox)
 [![codecov](https://codecov.io/gh/uqfoundation/pox/branch/master/graph/badge.svg)](https://codecov.io/gh/uqfoundation/pox)
+[![Downloads](https://pepy.tech/badge/pox)](https://pepy.tech/project/pox)
 -------------------
 You can get the latest development version with all the shiny new features at:
     https://github.com/uqfoundation
@@ -99,8 +98,8 @@ acknowledge use of ``pox`` by citing the following in your publication::
 
     Michael McKerns and Michael Aivazis,
     "pathos: a framework for heterogeneous computing", 2010- ;
-    http://trac.mystic.cacr.caltech.edu/project/pathos
+    https://uqfoundation.github.io/pathos.html
 
-Please see http://trac.mystic.cacr.caltech.edu/project/pathos or
+Please see https://uqfoundation.github.io/pathos.html or
 http://arxiv.org/pdf/1202.1056 for further information.
 
