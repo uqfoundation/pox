@@ -6,3 +6,5 @@ include tests/*py
 include tools/*
 recursive-include docs *
 include .*
+prune .git
+prune .coverage
