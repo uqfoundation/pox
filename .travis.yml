@@ -38,6 +38,7 @@ matrix:
           env:
 
         - python: 'pypy3'
+          dist: xenial
           env:
 
     allow_failures:
