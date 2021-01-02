@@ -34,10 +34,10 @@ matrix:
           dist: xenial
           env:
 
-        - python: 'pypy2.7'
+        - python: 'pypy'
           env:
 
-        - python: 'pypy3.6'
+        - python: 'pypy3'
           env:
 
     allow_failures:
