@@ -28,7 +28,7 @@ matrix:
           env:
 
         - python: 'pypy'
-          dist: bionic
+          dist: xenial
           env:
 
         - python: 'pypy3'
