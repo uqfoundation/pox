@@ -28,7 +28,7 @@ unset USERNAME
 
 
 # user aliases
-alias pythonpath='python -c "import sys; print sys.path"'
+alias pythonpath='python -c "import sys; print(sys.path)"'
 
 
 # EOF
