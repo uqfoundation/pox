@@ -476,23 +476,31 @@ def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
         if the executable is not found, an error will be thrown unless
         ``ignore_error=True``.
     """
-    target = "python"; tail = ""
+    import os
     import sys
+    base = os.path.basename(sys.executable)
+    IS_PYPY = base.startswith('pypy')
+    target = "pypy" if IS_PYPY else "python"; tail = ""
     if lazy and not (sys.platform[:3] == 'win'):
-        target = "`which python"; tail = "`"
+        target = "`which {0}".format(target); tail = "`"
     # include version number
+    DOT = "." if "." in base else ""
     if str(version).startswith(('2','3','4','5','6','7','8','9','1','0')):
-        pyversion = str(version)
+        if "." in str(version):
+            pyversion = str(version) if DOT else "".join(str(version).split('.'))
+        else:
+            pyversion = str(float(version)) if "-" in base else str(version)
     elif bool(version):
-        pyversion = ".".join(str(i) for i in sys.version_info[0:2])
+        pyversion = DOT.join(str(i) for i in sys.version_info[0:2])
     else:
         pyversion = ""
-    target = "".join([target, pyversion, tail])
+    DASH = "-" if (pyversion and "-" in base) else ""
+    target = "".join([DASH.join([target, pyversion]), tail])
     # lookup full path
     if not lazy and fullpath:
         #XXX: better to use 'version' kwd directly...?
         version = pyversion.split('.')
-        sysversion = sys.version_info[:len(version)]
+        sysversion = sys.version_info[:len(version)] #XXX: <= 10
         if not pyversion or tuple(int(i) for i in version) == sysversion:
             target = sys.executable
         else:
