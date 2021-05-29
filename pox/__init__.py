@@ -37,7 +37,7 @@ def license():
 
 def citation():
     """print the citation"""
-    print(__doc__[-485:-115])
+    print(__doc__[-491:-118])
     return
 
 # end of file
