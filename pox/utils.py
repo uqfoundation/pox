@@ -484,7 +484,7 @@ def which_python(version=False, lazy=False, fullpath=True, ignore_errors=True):
     if lazy and not (sys.platform[:3] == 'win'):
         target = "`which {0}".format(target); tail = "`"
     # include version number
-    DOT = "." if "." in base else ""
+    DOT = "." if (not IS_PYPY) or ("." in base) else ""
     if str(version).startswith(('2','3','4','5','6','7','8','9','1','0')):
         if "." in str(version):
             pyversion = str(version) if DOT else "".join(str(version).split('.'))
