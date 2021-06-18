@@ -71,6 +71,61 @@ You can get the latest development version with all the shiny new features at:
 If you have a new contribution, please submit a pull request.
 
 
+Basic Usage
+-----------
+`pox` includes some basic utilities to connect to and automate exploration
+on local and remote filesystems. There are some basic functions to discover
+important locations::
+
+    >>> import pox
+    >>> pox.homedir()
+    '/Users/mmckerns'
+    >>> pox.rootdir()
+    '/'
+
+or, you can interact with local and global environment variables::
+
+    >>> local = {'DEV':'${HOME}/dev', 'FOO_VERSION':'0.1', 'BAR_VERSION':'1.0'}
+    >>> pox.getvars('${DEV}/lib/foo-${FOO_VERSION}', local)
+    {'DEV': '${HOME}/dev', 'FOO_VERSION': '0.1'}
+    >>> pox.expandvars('${DEV}/lib/foo-${FOO_VERSION}', local)
+    '${HOME}/dev/lib/foo-0.1'
+    >>> pox.expandvars('${HOME}/dev/lib/foo-0.1')
+    '/Users/mmckerns/dev/lib/foo-0.1'
+    >>> pox.env('HOME')
+    {'HOME': '/Users/mmckerns'}
+
+and perform some basic search functions::
+
+    >>> pox.find('python3.6', recurse=5, root='/opt')
+    ['/opt/local/bin/python3.6']
+    >>> pox.which('python3.6')
+    '/opt/local/bin/python3.6'
+
+`pox` also has a specialized `which` command just for python::
+
+    >>> pox.which_python()
+    '/opt/local/bin/python3.6'
+    >>> pox.which_python(lazy=True, version=True)
+    '`which python3.6`'
+
+Any of the `pox` functions can be launched from the command line,
+which facilitates executing commands across parallel and distributed pipes
+(such as `pathos.connection.Pipe` and `pathos.secure.connection.Pipe`)::
+
+    >>> import pathos
+    >>> p = pathos.connection.Pipe()
+    >>> p(command="python -m pox 'which_python()'")
+    >>> p.launch()
+    >>> print(p.response())
+    '/usr/bin/python'
+    >>> p.kill()
+
+The functions in `pox` that help make interactions with filesystems and
+environment varialbles programmatic and abstract become especially relevant
+when trying to execute complex commands remotely. 
+
+
 More Information
 ----------------
 Probably the best way to get started is to look at the documentation at
