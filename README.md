@@ -52,6 +52,8 @@ Major Features
 
 
 Current Release
+[![Downloads](https://pepy.tech/badge/pox)](https://pepy.tech/project/pox)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pox?color=blue&label=conda%20installs)](https://anaconda.org/conda-forge/pox)
 ---------------
 The latest released version of ``pox`` is available from:
     https://pypi.org/project/pox
@@ -60,10 +62,10 @@ The latest released version of ``pox`` is available from:
 
 
 Development Version
+[![Support](https://img.shields.io/badge/support-the%20UQ%20Foundation-purple.svg?style=flat&colorA=black&colorB=purple)](http://www.uqfoundation.org/pages/donate.html)
 [![Documentation Status](https://readthedocs.org/projects/pox/badge/?version=latest)](https://pox.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.com/uqfoundation/pox.svg?label=build&logo=travis&branch=master)](https://travis-ci.com/uqfoundation/pox)
 [![codecov](https://codecov.io/gh/uqfoundation/pox/branch/master/graph/badge.svg)](https://codecov.io/gh/uqfoundation/pox)
-[![Downloads](https://pepy.tech/badge/pox)](https://pepy.tech/project/pox)
 -------------------
 You can get the latest development version with all the shiny new features at:
     https://github.com/uqfoundation
