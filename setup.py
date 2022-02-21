@@ -161,7 +161,7 @@ Requirements
 
 ``pox`` requires:
 
-    - ``python``, **version == 2.7** or **version >= 3.6**, or ``pypy``
+    - ``python`` (or ``pypy``), **version == 2.7** or **version >= 3.6**
 
 Optional requirements:
 
@@ -250,6 +250,7 @@ setup(name='pox',
                      'Programming Language :: Python :: 3.8',
                      'Programming Language :: Python :: 3.9',
                      'Programming Language :: Python :: 3.10',
+                     'Programming Language :: Python :: Implementation :: PyPy',
                      'Topic :: Scientific/Engineering',
                      'Topic :: Software Development'],
 
