@@ -15,7 +15,8 @@ branch = true
 [paths]
 source =
     pox
-    */site-packages/pox*/pox
+    */site-packages/pox
+    */site-packages/pox-*/pox
 
 [report]
 include =
