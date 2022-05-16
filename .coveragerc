@@ -1,6 +1,7 @@
 [run]
 # source = pox
-include = */pox/*
+include =
+    */pox/*
 omit = 
     */tests/*
     */info.py
@@ -11,7 +12,15 @@ branch = true
 # data_file = $TRAVIS_BUILD_DIR/.coverage
 # debug = trace
 
+[paths]
+source =
+    pox
+    */site-packages/pox
+    */site-packages/pox-*/pox
+
 [report]
+include =
+    */pox/*
 exclude_lines =
     pragma: no cover
     raise NotImplementedError

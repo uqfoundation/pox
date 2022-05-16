@@ -73,9 +73,25 @@ You can get the latest development version with all the shiny new features at:
 If you have a new contribution, please submit a pull request.
 
 
+Installation
+------------
+``pox`` can be installed with ``pip``::
+
+    $ pip install pox
+
+
+Requirements
+------------
+``pox`` requires:
+
+* ``python`` (or ``pypy``), **==2.7** or **>=3.7**
+* ``setuptools``, **>=42**
+* ``wheel``, **>=0.1**
+
+
 Basic Usage
 -----------
-`pox` includes some basic utilities to connect to and automate exploration
+``pox`` includes some basic utilities to connect to and automate exploration
 on local and remote filesystems. There are some basic functions to discover
 important locations::
 
@@ -104,14 +120,14 @@ and perform some basic search functions::
     >>> pox.which('python3.6')
     '/opt/local/bin/python3.6'
 
-`pox` also has a specialized `which` command just for python::
+``pox`` also has a specialized `which` command just for python::
 
     >>> pox.which_python()
     '/opt/local/bin/python3.6'
     >>> pox.which_python(lazy=True, version=True)
     '`which python3.6`'
 
-Any of the `pox` functions can be launched from the command line,
+Any of the ``pox`` functions can be launched from the command line,
 which facilitates executing commands across parallel and distributed pipes
 (such as `pathos.connection.Pipe` and `pathos.secure.connection.Pipe`)::
 
@@ -123,7 +139,7 @@ which facilitates executing commands across parallel and distributed pipes
     '/usr/bin/python'
     >>> p.kill()
 
-The functions in `pox` that help make interactions with filesystems and
+The functions in ``pox`` that help make interactions with filesystems and
 environment varialbles programmatic and abstract become especially relevant
 when trying to execute complex commands remotely. 
 
