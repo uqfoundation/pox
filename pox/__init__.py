@@ -234,16 +234,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 """
 
-try:
-    # This is a hack to import a minimal package for the build process
-    __POX_SETUP__
-except NameError:
-    from .shutils import shelltype, homedir, rootdir, username, sep, \
-                         minpath, env, whereis, which, find, walk, where, \
-                         mkdir, rmtree, shellsub
-    from .utils import pattern, expandvars, getvars, convert, replace, select, \
-                       findpackage, wait_for, disk_used, remote, which_python, \
-                       parse_remote, kbytes, selectdict, index_slice, index_join
+from .shutils import shelltype, homedir, rootdir, username, sep, \
+                     minpath, env, whereis, which, find, walk, where, \
+                     mkdir, rmtree, shellsub
+from .utils import pattern, expandvars, getvars, convert, replace, select, \
+                   findpackage, wait_for, disk_used, remote, which_python, \
+                   parse_remote, kbytes, selectdict, index_slice, index_join
 
 
 def license():
