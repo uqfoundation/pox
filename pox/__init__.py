@@ -7,7 +7,7 @@
 #  - https://github.com/uqfoundation/pox/blob/master/LICENSE
 
 # author, version, license, and long description
-__version__ = '0.3.1'
+__version__ = '0.3.2.dev0'
 __author__ = 'Mike McKerns'
 
 __doc__ = """
