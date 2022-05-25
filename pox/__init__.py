@@ -99,7 +99,7 @@ Requirements
 
 ``pox`` requires:
 
-    - ``python`` (or ``pypy``), **==2.7** or **>=3.7**
+    - ``python`` (or ``pypy``), **>=3.7**
     - ``setuptools``, **>=42**
 
 
@@ -130,17 +130,17 @@ or, you can interact with local and global environment variables::
 
 and perform some basic search functions::
 
-    >>> pox.find('python3.6', recurse=5, root='/opt')
-    ['/opt/local/bin/python3.6']
-    >>> pox.which('python3.6')
-    '/opt/local/bin/python3.6'
+    >>> pox.find('python3.9', recurse=5, root='/opt')
+    ['/opt/local/bin/python3.9']
+    >>> pox.which('python3.9')
+    '/opt/local/bin/python3.9'
 
 ``pox`` also has a specialized `which` command just for python::
 
     >>> pox.which_python()
-    '/opt/local/bin/python3.6'
+    '/opt/local/bin/python3.9'
     >>> pox.which_python(lazy=True, version=True)
-    '`which python3.6`'
+    '`which python3.9`'
 
 Any of the ``pox`` functions can be launched from the command line,
 which facilitates executing commands across parallel and distributed pipes
