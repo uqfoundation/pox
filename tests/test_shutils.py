@@ -82,8 +82,9 @@ def test_shutils():
     assert all('PATH' in key for key in pathdict)
 
    #print('testing which...')
-    assert which('python').endswith(('python','python.exe'))
-    assert which('python') in which('python',all=True)
+    python = 'python' if which('python') else 'python3'
+    assert which(python).endswith((python,'python.exe'))
+    assert which(python) in which(python,all=True)
 
    #print('testing find...')
    #print(find('python','/usr/local',type='l'))
