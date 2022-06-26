@@ -18,10 +18,7 @@ popen4 = {'shell':True, 'stdin':PIPE, 'stdout':PIPE, 'stderr':STDOUT, \
           'close_fds':True}
 from ._disk import rmtree
 
-if sys.version_info[0] < 3:
-    MODE = eval('0775')
-else:
-    MODE = eval('0o775')
+MODE = eval('0o775')
 
 def shelltype():
     '''get the name (e.g. ``bash``) of the current command shell
@@ -182,8 +179,7 @@ def whereis(prog,all=False): #Unix specific (Windows punts to which)
     p.stdin.close()
     pathstr = p.stdout.read()
     p.stdout.close()
-    if sys.version_info[0] > 2:
-        pathstr = pathstr.decode()
+    pathstr = pathstr.decode()
     paths = pathstr.strip().split(":")[-1] #XXX: ':' ???  -1 ???
     pathlist = paths.strip().split()
     if not pathlist:
@@ -229,8 +225,7 @@ def which(prog,allow_links=True,ignore_errors=True,all=False): #Unix specific
     pathstr = p.stdout.read()
     p.stdout.close()
     errind = 'no '+prog+' in'
-    if sys.version_info[0] > 2:
-        pathstr = pathstr.decode()
+    pathstr = pathstr.decode()
     if (errind in pathstr) and (ignore_errors):
         return None
     pathstr = minpath(pathstr.strip(),os.linesep)
@@ -300,8 +295,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
                 if verbose: print("Error: incorrect usage '%s'" % command)
                 return
             for path in pathstr:
-                if sys.version_info[0] > 2:
-                    path = path.decode()
+                path = path.decode()
                 if errind[0] not in path:
                     path = path.strip()
                     pathlist.append(os.path.abspath(path))
