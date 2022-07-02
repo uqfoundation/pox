@@ -97,7 +97,7 @@ setup_kwds = dict(
         'Topic :: Software Development',
     ],
     packages = ['pox','pox.tests'],
-    package_dir = {'pox':'pox','pox.tests':'tests'},
+    package_dir = {'pox':'pox','pox.tests':'pox/tests'},
     scripts=['scripts/pox'],
 )
 
