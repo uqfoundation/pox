@@ -30,13 +30,13 @@ def get_readme_as_rst(filepath):
         README = ''.join((null,split,tag,split,'\n'))
         skip = False
         for line in fh:
-            if line.startswith('['): 
+            if line.startswith('['):
                 continue
             elif skip and line.startswith('    http'):
                 README += '\n' + line
             elif line.startswith('* '):
                 README += line.replace('* ','    - ',1)
-            elif line.startswith('-'): 
+            elif line.startswith('-'):
                 README += line.replace('-','=') + '\n'
             else:
                 README += line
@@ -59,7 +59,7 @@ def write_info_file(dirpath, modulename, **info):
     import os
     infofile = os.path.join(dirpath, '%s/__info__.py' % modulename)
     header = '''#!/usr/bin/env python
-# 
+#
 # Author: Mike McKerns (mmckerns @caltech and @uqfoundation)
 # Copyright (c) 2022 The Uncertainty Quantification Foundation.
 # License: 3-clause BSD.  The full license text is available at:
