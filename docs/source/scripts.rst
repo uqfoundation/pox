@@ -5,5 +5,4 @@ pox script
 -------------------
 
 .. automodule:: _pox
-    :members:
-
+..  :exclude-members: +
