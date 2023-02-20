@@ -14,14 +14,14 @@ locally. While ``pox`` is in the same vein of both the ``os`` and ``shutil``
 builtin modules, the majority of its functionality is unique and compliments
 these two modules.
 
-``pox`` provides python equivalents of several unix shell commands such as
+``pox`` provides Python equivalents of several unix shell commands such as
 ``which`` and ``find``. These commands allow automated discovery of what has
 been installed on an operating system, and where the essential tools are
 located. This capability is useful not only for exploring remote hosts,
 but also locally as a helper utility for automated build and installation.
 
 Several high-level operations on files and filesystems are also provided.
-Examples of which are: finding the location of an installed python package,
+Examples of which are: finding the location of an installed Python package,
 determining if and where the source code resides on the filesystem, and
 determining what version the installed package is.
 
@@ -30,7 +30,7 @@ to a remote filesystem.  In conjunction with a registry of environment
 variables and installed utilites, ``pox`` enables the user to interact with
 a remote filesystem as if they were logged in locally. 
 
-``pox`` is part of ``pathos``, a python framework for heterogeneous computing.
+``pox`` is part of ``pathos``, a Python framework for heterogeneous computing.
 ``pox`` is in active development, so any user feedback, bug reports, comments,
 or suggestions are highly appreciated.  A list of issues is located at https://github.com/uqfoundation/pox/issues, with a legacy list maintained at https://uqfoundation.github.io/project/pathos/query.
 
@@ -119,7 +119,7 @@ and perform some basic search functions::
     >>> pox.which('python3.9')
     '/opt/local/bin/python3.9'
 
-``pox`` also has a specialized `which` command just for python::
+``pox`` also has a specialized `which` command just for Python::
 
     >>> pox.which_python()
     '/opt/local/bin/python3.9'
