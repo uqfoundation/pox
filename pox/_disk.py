@@ -92,7 +92,8 @@ def rmtree(path, self=True, ignore_errors=False, onerror=None):
         If self=False, the directory indicated by path is left in place,
         and its subdirectories are erased. If self=True, path is also removed.
 
-        If ignore_errors=True, errors are ignored. Otherwise, onerror is called        to handle the error with arguments ``(func, path, exc_info)``, where
+        If ignore_errors=True, errors are ignored. Otherwise, onerror is called
+        to handle the error with arguments ``(func, path, exc_info)``, where
         *func* is ``os.listdir``, ``os.remove``, or ``os.rmdir``; *path* is the
         argument to the function that caused it to fail; and *exc_info* is a
         tuple returned by ``sys.exc_info()``. If ignore_errors=False and
