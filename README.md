@@ -54,6 +54,7 @@ Major Features
 Current Release
 [![Downloads](https://static.pepy.tech/personalized-badge/pox?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pypi%20downloads)](https://pepy.tech/project/pox)
 [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pox?color=blue&label=conda%20downloads)](https://anaconda.org/conda-forge/pox)
+[![Stack Overflow](https://img.shields.io/badge/stackoverflow-get%20help-black.svg)](https://stackoverflow.com/questions/tagged/pathos)
 ---------------
 The latest released version of ``pox`` is available from:
     https://pypi.org/project/pox
