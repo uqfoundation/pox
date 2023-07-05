@@ -3,15 +3,16 @@
 pox package documentation
 =========================
 
-.. automodule:: pox
-..  :exclude-members: +
-
 .. toctree::
+    :hidden:
     :maxdepth: 2
-    :caption: Contents:
 
+    self
     pox
     scripts
+
+.. automodule:: pox
+..  :exclude-members: +
 
 Indices and tables
 ==================
