@@ -37,7 +37,7 @@ matrix:
         - python: 'pypy3.9-7.3.12'
           env:
 
-        - python: 'pypy3.10-7.3.12' # at 7.3.12
+        - python: 'pypy3.10-7.3.12'
           env:
 
     allow_failures:
