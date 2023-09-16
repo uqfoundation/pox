@@ -314,7 +314,7 @@ def walk(root,patterns='*',recurse=True,folders=False,files=True,links=True):
 
     Args:
         root (str): path of top-level directory to search.
-        patterns (str, default=\'\*\'): (partial) name of items to search for.
+        patterns (str, default=\'*\'): (partial) name of items to search for.
         recurse (bool, default=True): if True, recurse downward from *root*.
         folders (bool, default=False): if True, include folders in the results.
         files (bool, default=True): if True, include files in results.
@@ -459,31 +459,31 @@ def shellsub(command):
         the parsed command string.
     '''
     import re
-    command = re.compile("\'").sub("\\\'",command) 
-    command = re.compile('\"').sub('\\\"',command)
-    command = re.compile('\$').sub('\\\$',command)
-    command = re.compile('\(').sub('\\\(',command)
-    command = re.compile('\)').sub('\\\)',command)
-    #command = re.compile('\{').sub('\\\{',command)
-    #command = re.compile('\}').sub('\\\}',command)
-    #command = re.compile('\[').sub('\\\[',command)
-    #command = re.compile('\]').sub('\\\]',command)
-    #command = re.compile('\~').sub('\\\~',command)
-    #command = re.compile('\!').sub('\\\!',command)
-    #command = re.compile('\&').sub('\\\&',command)
-    #command = re.compile('\|').sub('\\\|',command)
-    #command = re.compile('\*').sub('\\\*',command)
-    #command = re.compile('\%').sub('\\\%',command)
-    #command = re.compile('\#').sub('\\\#',command)
-    #command = re.compile('\@').sub('\\\@',command)
-    #command = re.compile('\:').sub('\\\:',command)
-    #command = re.compile('\;').sub('\\\;',command)
-    #command = re.compile('\,').sub('\\\,',command)
-    #command = re.compile('\.').sub('\\\.',command)
-    #command = re.compile('\?').sub('\\\?',command)
-    #command = re.compile('\>').sub('\\\>',command)
-    #command = re.compile('\<').sub('\\\<',command)
-    #command = re.compile('\/').sub('\\\/',command)
+    command = re.compile(r"\'").sub(r"\\'",command) 
+    command = re.compile(r'\"').sub(r'\\"',command)
+    command = re.compile(r'\$').sub(r'\\$',command)
+    command = re.compile(r'\(').sub(r'\\(',command)
+    command = re.compile(r'\)').sub(r'\\)',command)
+    #command = re.compile(r'\{').sub(r'\\{',command)
+    #command = re.compile(r'\}').sub(r'\\}',command)
+    #command = re.compile(r'\[').sub(r'\\[',command)
+    #command = re.compile(r'\]').sub(r'\\]',command)
+    #command = re.compile(r'\~').sub(r'\\~',command)
+    #command = re.compile(r'\!').sub(r'\\!',command)
+    #command = re.compile(r'\&').sub(r'\\&',command)
+    #command = re.compile(r'\|').sub(r'\\|',command)
+    #command = re.compile(r'\*').sub(r'\\*',command)
+    #command = re.compile(r'\%').sub(r'\\%',command)
+    #command = re.compile(r'\#').sub(r'\\#',command)
+    #command = re.compile(r'\@').sub(r'\\@',command)
+    #command = re.compile(r'\:').sub(r'\\:',command)
+    #command = re.compile(r'\;').sub(r'\\;',command)
+    #command = re.compile(r'\,').sub(r'\\,',command)
+    #command = re.compile(r'\.').sub(r'\\.',command)
+    #command = re.compile(r'\?').sub(r'\\?',command)
+    #command = re.compile(r'\>').sub(r'\\>',command)
+    #command = re.compile(r'\<').sub(r'\\<',command)
+    #command = re.compile(r'\/').sub(r'\\/',command)
     #command = re.compile('\\\\').sub('\\\\\\\\',command) 
     return command
 
