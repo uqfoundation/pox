@@ -110,9 +110,3 @@ except ImportError:
     print("WARNING: One of the following dependencies is unresolved:")
 #   print("    %s" % dummy_version)
     print("***********************************************************\n")
-
-
-if __name__=='__main__':
-    pass
-
-# end of file
