@@ -66,7 +66,7 @@ Development Version
 [![Support](https://img.shields.io/badge/support-the%20UQ%20Foundation-purple.svg?style=flat&colorA=grey&colorB=purple)](http://www.uqfoundation.org/pages/donate.html)
 [![Documentation Status](https://readthedocs.org/projects/pox/badge/?version=latest)](https://pox.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://app.travis-ci.com/uqfoundation/pox.svg?label=build&logo=travis&branch=master)](https://app.travis-ci.com/github/uqfoundation/pox)
-[![codecov](https://codecov.io/gh/uqfoundation/pox/branch/master/graph/badge.svg)](https://codecov.io/gh/uqfoundation/pox)
+[![codecov](https://codecov.io/gh/uqfoundation/pox/branch/master/graph/badge.svg?token=E0vjuI60fN)](https://codecov.io/gh/uqfoundation/pox)
 -------------------
 You can get the latest development version with all the shiny new features at:
     https://github.com/uqfoundation
