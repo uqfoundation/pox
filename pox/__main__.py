@@ -54,6 +54,3 @@ if __name__=='__main__':
             print("Error: incorrect syntax '%s'\n" % func)
             exec('print(%s.__doc__)' % func.split('(')[0])
     else: help()
-
-
-# End of file 

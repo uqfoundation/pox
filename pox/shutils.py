@@ -494,10 +494,3 @@ getROOT = rootdir
 getUSER = username
 getSEP = sep
 stripDups = minpath
-
-
-if __name__=='__main__':
-    pass
-
-
-# End of file 
