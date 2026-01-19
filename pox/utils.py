@@ -554,10 +554,3 @@ makeTarget = remote
 parseTarget = parse_remote
 prunelist = select
 prunedict = selectdict
-
-
-if __name__=='__main__':
-    pass
-
-
-# End of file 
