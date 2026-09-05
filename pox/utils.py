@@ -165,7 +165,7 @@ def convert(files,platform=None,pathsep=None,verbose=True):
             outfile.write(filestring)
             outfile.close()
             if verbose: print("Converted '%s' to '%s' format" % (file,platform))
-        except:
+        except Exception:
             if verbose: print("File conversion failed for '%s'" % (file))
             allconverted = 1 # Error 1: file conversion failed
     return allconverted

@@ -46,7 +46,7 @@ def homedir():
         homedir = env('USERPROFILE',all=False) or os.path.expandvars('$HOME')
         if '$' in homedir: raise ValueError
         return homedir
-    except:
+    except Exception:
         homedir = None
         directory = os.curdir
         while not homedir:
@@ -76,7 +76,7 @@ def username():
     '''
     try:
         return os.getlogin()
-    except:
+    except Exception:
         uname = os.path.expandvars('$USER')
         if '$' in uname: uname = env('USERNAME', all=False)
         return uname
@@ -299,7 +299,7 @@ def find(patterns,root=None,recurse=True,type=None,verbose=False):
                 if errind[0] not in path:
                     path = path.strip()
                     pathlist.append(os.path.abspath(path))
-    except:
+    except Exception:
         folders = False;files = False;links = False
         if type in ['f']: files = True
         elif type in ['l']: links = True

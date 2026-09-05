@@ -32,7 +32,7 @@ def help(function=None):
         if isfunction(function):
             print(function.__doc__)
             return
-    except:
+    except Exception:
         pass
     print("Please provide a 'pox' command enclosed in quotes.\n")
     print("For example:")
@@ -46,11 +46,11 @@ if __name__=='__main__':
     import sys
     try:
         func = sys.argv[1]
-    except: func = None
+    except IndexError: func = None
     if func:
         try:
             exec('print(%s)' % func)
-        except:
+        except Exception:
             print("Error: incorrect syntax '%s'\n" % func)
             exec('print(%s.__doc__)' % func.split('(')[0])
     else: help()
